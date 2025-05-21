@@ -55,19 +55,21 @@ body {
   justify-content: space-between;
 }
 
-.logo {
-  font-weight: 600;
-  font-size: 20px;
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  gap: 4px;
+/* Increase logo size */
+.logo-img {
+  width: 36px;  /* Increase from 24px */
+  height: 36px; /* Increase from 24px */
+  margin-right: 8px;
+  background: none;
 }
 
-.logo-img {
-  width: 24px;
-  height: 24px;
-  background: none;
+/* Adjust logo container alignment */
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary);
 }
 
 .new-chat-btn {
