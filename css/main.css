@@ -57,8 +57,8 @@ body {
 
 /* Increase logo size */
 .logo-img {
-  width: 36px;  /* Increase from 24px */
-  height: 36px; /* Increase from 24px */
+  width: 72px;  /* Increase from 24px */
+  height: 72px; /* Increase from 24px */
   margin-right: 8px;
   background: none;
 }
