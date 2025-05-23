@@ -58,6 +58,7 @@ const predefinedResponses = {
       <p>1. The source of the contributions doesn't matter (can be from the parent), but the total cannot exceed the child's actual earned income for the year.</p>
       <p>2. The custodial Roth IRA will need to be transferred to a standard Roth IRA in the daughter's name when she reaches age of majority.
       <br>
+      <br>
       <p><strong>Citations:</strong> 
       <p>Based on general Roth IRA regulations and financial industry standards found in web search results regarding custodial Roth IRAs. </p>
     </div>
