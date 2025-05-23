@@ -53,7 +53,11 @@ const predefinedResponses = {
       <p>4. Make contributions that don't exceed the minor's earned income or annual limit </p>
       <p>5. Maintain account until child reaches age of majority (18-21 depending on state)</p>
       <br>
-      <p><strong>Clarifications:</strong> Proper documentation of the child's income is critical for IRS compliance. Horizon Financial policy would require verification of income source and filing status before opening the account under custodial guidelines.</p>
+      <p><strong>Clarifications:</strong> 
+      <br>
+      <p>The source of the contributions doesn't matter (can be from the parent), but the total cannot exceed the child's actual earned income for the year.</p>
+      <p>The custodial Roth IRA will need to be transferred to a standard Roth IRA in the daughter's name when she reaches age of majority.
+</p>
     </div>
   `,
   '403b-impact': `
