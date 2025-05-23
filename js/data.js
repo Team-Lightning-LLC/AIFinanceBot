@@ -45,12 +45,12 @@ const predefinedResponses = {
       <p><strong>Yes</strong>, Dr. Chen can contribute money to her daughter's Roth IRA as long as the <b>total contributions don't exceed her daughter's earned income for the year or $7,000</b> (2024 limit), whichever is less. <b>Since her daughter is 13 and earning money from work, a custodial Roth IRA can be opened with Dr. Chen as the custodian</b> until her daughter reaches the age of majority.
 </p>
       <br>
-      <p>Workflow:</p>
+      <p><b>Workflow:</b></p>
       <br>
-      <p>1. Verify the minor has <b>earned</b> income</p>
+      <p>1. Verify the minor has earned income</b></p>
       <p>2. Document the minor's earnings (especially important for informal work)</p>
-      <p>3. Open a custodial Roth IRA <b>with an adult as custodian</b></p>
-      <p>4. Make contributions <b>that don't exceed the minor's earned income</b> or annual limit </p>
+      <p>3. Open a custodial Roth IRA with an adult as custodian</p>
+      <p>4. Make contributions that don't exceed the minor's earned income or annual limit </p>
       <p>5. Maintain account until child reaches age of majority (18-21 depending on state)</p>
       <br>
       <p><strong>Clarifications:</strong> 
