@@ -42,15 +42,18 @@ const predefinedResponses = {
   // Eleanor Chen responses
   'daughter-roth': `
     <div class="message-content">
-      <p><strong>No</strong>, Dr. Chen may not directly contribute her own funds to a Roth IRA for her 13-year-old daughter unless the daughter has her own earned income. However, based on your description that the daughter is "making a bit of money from working on her own," a Roth IRA can be opened in the child's name as a custodial Roth IRA, with Dr. Chen acting as the custodian.</p>
+      <p><strong>Yes</strong>, Dr. Chen can contribute money to her daughter's Roth IRA as long as the total contributions don't exceed her daughter's earned income for the year or $7,000 (2024 limit), whichever is less. Since her daughter is 13 and earning money from work, a custodial Roth IRA can be opened with Dr. Chen as the custodian until her daughter reaches the age of majority.
+</p>
       <br>
-      <p>Here's the compliance-aligned framework:</p>
+      <p>Workflow:</p>
       <br>
-      <p><strong>Eligibility:</strong> The child must have legitimate earned income from work (babysitting, lawn mowing, etc.)</p>
-      <p><strong>Contribution Limit:</strong> Limited to the lesser of $6,500 (2023 limit) or 100% of the child's earned income</p>
-      <p><strong>Funding Source:</strong> While the money contributed must match the child's earned income, parents can "gift" money to the child to make contributions</p>
+      <p>1. Verify the minor has earned income</p>
+      <p>2. Document the minor's earnings (especially important for informal work)</p>
+      <p>3. Open a custodial Roth IRA with an adult as custodian</p>
+      <p>4. Make contributions that don't exceed the minor's earned income or annual limit </p>
+      <p>5. Maintain account until child reaches age of majority (18-21 depending on state)</p>
       <br>
-      <p><strong>Key Consideration:</strong> Proper documentation of the child's income is critical for IRS compliance. Horizon Financial policy would require verification of income source and filing status before opening the account under custodial guidelines.</p>
+      <p><strong>Clarifications:</strong> Proper documentation of the child's income is critical for IRS compliance. Horizon Financial policy would require verification of income source and filing status before opening the account under custodial guidelines.</p>
     </div>
   `,
   '403b-impact': `
