@@ -46,7 +46,6 @@ const predefinedResponses = {
 </p>
       <br>
       <p><b>Workflow:</b></p>
-      <br>
       <p>1. Verify the minor has earned income</b></p>
       <p>2. Document the minor's earnings (especially important for informal work)</p>
       <p>3. Open a custodial Roth IRA with an adult as custodian</p>
