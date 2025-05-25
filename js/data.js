@@ -1,12 +1,12 @@
 // Demo client data
 const clients = {
   'john-smith': {
-    id: 'john-smith',
-    name: 'John Smith',
-    company: 'Acme Corporation',
-    email: 'john.smith@acme.com',
+    id: 'Katelyn-Lee',
+    name: 'Katelyn-Lee',
+    company: 'Truist',
+    email: 'Katelyn-Lee002@Truist.com',
     phone: '+1 (555) 123-4567',
-    accountType: 'Premium',
+    accountType: 'Truist 457(b) Plan',
     lastContact: 'April 28, 2025'
   },
   'eleanor-chen': {
