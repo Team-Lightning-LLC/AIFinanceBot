@@ -1,132 +1,213 @@
-// Main application logic
-document.addEventListener('DOMContentLoaded', function() {
-  // DOM elements
-  const callBanner = document.getElementById('call-banner');
-  const acceptCallBtn = document.getElementById('accept-call-btn');
-  const declineCallBtn = document.getElementById('decline-call-btn');
-  const manualNewChatBtn = document.getElementById('manual-new-chat-btn');
-  const messageInput = document.getElementById('message-input');
-  const sendBtn = document.getElementById('send-btn');
-  const callBtn = document.getElementById('call-btn');
-  const exportBtn = document.getElementById('export-btn');
-  const callModal = document.getElementById('call-modal');
-  const endCallBtn = document.getElementById('end-call-btn');
-  const exportModal = document.getElementById('export-modal');
-  const closeExport = document.getElementById('close-export');
-  const cancelExport = document.getElementById('cancel-export');
-  const settingsBtn = document.getElementById('settings-btn');
+// Main application controller
+class AssistantAI {
+  constructor() {
+    this.init();
+  }
   
-  // Show call banner by default for the demo
-  callBanner.style.display = 'flex';
+  init() {
+    this.bindEvents();
+    this.showWelcomeState();
+  }
   
-  // Hide the empty state initially and show it when needed
-  document.getElementById('empty-state').style.display = 'flex';
-  document.getElementById('chat-content').style.display = 'none';
-  
-  // Accept Call Button - Create a new chat for John Smith
-  acceptCallBtn.addEventListener('click', function() {
-    // Hide call banner
-    callBanner.style.display = 'none';
+  bindEvents() {
+    // Client banner actions
+    document.getElementById('accept-client-btn')?.addEventListener('click', () => {
+      this.acceptClient('james-jackson');
+    });
     
-    // Create a new chat for John Smith
-    const newChat = ChatManager.createChat('john-smith');
-    if (newChat) {
-      const chatItem = ChatManager.addChatToSidebar(newChat);
-      // Activate the new chat
-      ChatManager.activateChat(newChat.id);
-      // Add AI response after a delay
-      setTimeout(() => {
-        ChatManager.processAIResponse('roth ira', 'john-smith');
-      }, 500);
-    }
-  });
-  
-  // Decline Call Button
-  declineCallBtn.addEventListener('click', function() {
-    callBanner.style.display = 'none';
-  });
-  
-  // Manual New Chat Button - Create a new chat for Eleanor Chen
-  manualNewChatBtn.addEventListener('click', function() {
-    // Create a new chat for Eleanor Chen (as an example)
-    const newChat = ChatManager.createChat('eleanor-chen');
-    if (newChat) {
-      const chatItem = ChatManager.addChatToSidebar(newChat);
-      // Activate the new chat
-      ChatManager.activateChat(newChat.id);
-      // Add AI response after a delay
-      setTimeout(() => {
-        ChatManager.processAIResponse('daughter roth', 'eleanor-chen');
-      }, 500);
-    }
-  });
-  
-  // Send Message Button
-  sendBtn.addEventListener('click', function() {
-    sendMessage();
-  });
-  
-  // Enter key to send message
-  messageInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  });
-  
-  // Function to send a message
-  function sendMessage() {
-    const message = messageInput.value.trim();
-    if (!message || !ChatManager.activeClient) return;
+    document.getElementById('decline-client-btn')?.addEventListener('click', () => {
+      this.declineClient();
+    });
     
-    // Find the active chat for current client
-    let activeChat = null;
-    for (const chatId in ChatManager.chats) {
-      if (ChatManager.chats[chatId].clientId === ChatManager.activeClient) {
-        activeChat = ChatManager.chats[chatId];
-        break;
+    // Manual new consultation
+    document.getElementById('manual-new-chat-btn')?.addEventListener('click', () => {
+      this.startNewConsultation('eleanor-chen');
+    });
+    
+    // Message input
+    const messageInput = document.getElementById('message-input');
+    const sendBtn = document.getElementById('send-btn');
+    
+    sendBtn?.addEventListener('click', () => {
+      this.sendMessage();
+    });
+    
+    messageInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        this.sendMessage();
       }
-    }
+    });
     
-    if (activeChat) {
-      // Add user message
-      ChatManager.addMessage(activeChat.id, message, true);
-      // Clear input
-      messageInput.value = '';
-      // Process AI response
-      ChatManager.processAIResponse(message, ChatManager.activeClient);
+    // Auto-resize textarea
+    messageInput?.addEventListener('input', (e) => {
+      this.autoResizeTextarea(e.target);
+    });
+    
+    // Suggestion buttons
+    document.querySelectorAll('.suggestion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const suggestion = btn.dataset.suggestion;
+        messageInput.value = suggestion;
+        this.sendMessage();
+      });
+    });
+    
+    // Header actions
+    document.getElementById('call-btn')?.addEventListener('click', () => {
+      this.showCallModal();
+    });
+    
+    document.getElementById('export-btn')?.addEventListener('click', () => {
+      this.showExportModal();
+    });
+    
+    // Modal actions
+    document.getElementById('end-call-btn')?.addEventListener('click', () => {
+      this.hideCallModal();
+    });
+    
+    document.getElementById('close-export-btn')?.addEventListener('click', () => {
+      this.hideExportModal();
+    });
+    
+    document.getElementById('cancel-export-btn')?.addEventListener('click', () => {
+      this.hideExportModal();
+    });
+    
+    // Settings
+    document.getElementById('settings-btn')?.addEventListener('click', () => {
+      window.location.href = 'settings.html';
+    });
+    
+    // Click outside modals to close
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) {
+        this.hideAllModals();
+      }
+    });
+  }
+  
+  showWelcomeState() {
+    document.getElementById('welcome-state').style.display = 'block';
+    document.getElementById('chat-interface').style.display = 'none';
+    document.getElementById('client-banner').style.display = 'flex';
+  }
+  
+  acceptClient(clientId) {
+    this.hideClientBanner();
+    this.startNewConsultation(clientId, true);
+  }
+  
+  declineClient() {
+    this.hideClientBanner();
+    this.showDeclineMessage();
+  }
+  
+  hideClientBanner() {
+    const banner = document.getElementById('client-banner');
+    banner.style.transform = 'translateY(-100%)';
+    banner.style.opacity = '0';
+    setTimeout(() => {
+      banner.style.display = 'none';
+    }, 300);
+  }
+  
+  showDeclineMessage() {
+    // Show a brief message that client was declined
+    const welcomeContent = document.querySelector('.welcome-content');
+    const originalContent = welcomeContent.innerHTML;
+    
+    welcomeContent.innerHTML = `
+      <div class="decline-message">
+        <div class="decline-icon">
+          <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+          </svg>
+        </div>
+        <h2>Client Consultation Declined</h2>
+        <p>The consultation request has been declined and the client has been notified.</p>
+      </div>
+    `;
+    
+    // Restore original content after 3 seconds
+    setTimeout(() => {
+      welcomeContent.innerHTML = originalContent;
+    }, 3000);
+  }
+  
+  startNewConsultation(clientId, isAccepted = false) {
+    const consultation = ChatManager.createConsultation(clientId);
+    if (!consultation) return;
+    
+    // Add to sidebar
+    ChatManager.addToSidebar(consultation);
+    
+    // Activate consultation
+    ChatManager.activateConsultation(consultation.id);
+    
+    // Add initial question if accepted from banner
+    if (isAccepted) {
+      setTimeout(() => {
+        const initialQuestion = initialQuestions[clientId];
+        if (initialQuestion) {
+          ChatManager.addMessage(consultation.id, initialQuestion, true);
+          ChatManager.processAIResponse(initialQuestion, clientId);
+        }
+      }, 500);
     }
   }
   
-  // Call Button - Show call modal
-  callBtn.addEventListener('click', function() {
-    callModal.classList.add('active');
-  });
+  sendMessage() {
+    const messageInput = document.getElementById('message-input');
+    const message = messageInput.value.trim();
+    
+    if (!message || !ChatManager.activeChat) return;
+    
+    // Add user message
+    ChatManager.addMessage(ChatManager.activeChat.id, message, true);
+    
+    // Clear input
+    messageInput.value = '';
+    this.autoResizeTextarea(messageInput);
+    
+    // Process AI response
+    ChatManager.processAIResponse(message, ChatManager.activeChat.clientId);
+  }
   
-  // End Call Button - Hide call modal
-  endCallBtn.addEventListener('click', function() {
-    callModal.classList.remove('active');
-  });
+  autoResizeTextarea(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+  }
   
-  // Export Button - Show export modal
-  exportBtn.addEventListener('click', function() {
-    exportModal.classList.add('active');
-  });
+  showCallModal() {
+    document.getElementById('call-modal').classList.add('active');
+  }
   
-  // Close/Cancel Export Buttons
-  closeExport.addEventListener('click', function() {
-    exportModal.classList.remove('active');
-  });
+  hideCallModal() {
+    document.getElementById('call-modal').classList.remove('active');
+  }
   
-  cancelExport.addEventListener('click', function() {
-    exportModal.classList.remove('active');
-  });
+  showExportModal() {
+    const summary = ChatManager.generateExportSummary();
+    document.getElementById('export-summary').textContent = summary;
+    document.getElementById('export-modal').classList.add('active');
+  }
   
-  // Settings Button - Navigate to settings page
-  settingsBtn.addEventListener('click', function() {
-    window.location.href = 'settings.html';
-  });
+  hideExportModal() {
+    document.getElementById('export-modal').classList.remove('active');
+  }
   
-  // Initialize the demo
-  // We don't auto-create chats, waiting for user interaction instead
+  hideAllModals() {
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.classList.remove('active');
+    });
+  }
+}
+
+// Initialize app when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  new AssistantAI();
 });
