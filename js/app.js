@@ -148,8 +148,9 @@ class AssistantAI {
     // Activate consultation
     ChatManager.activateConsultation(consultation.id);
     
-    // Add initial question if accepted from banner
-    if (isAccepted) {
+    // No auto-fill for James Jackson - user must type the question manually
+    // For Eleanor Chen (manual new consultation), we can still auto-fill if desired
+    if (isAccepted && clientId === 'eleanor-chen') {
       setTimeout(() => {
         const initialQuestion = initialQuestions[clientId];
         if (initialQuestion) {
