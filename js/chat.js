@@ -50,20 +50,8 @@ const ChatManager = {
             <div class="info-value">${client.company}</div>
           </div>
           <div class="info-item">
-            <div class="info-label">Email</div>
-            <div class="info-value">${client.email}</div>
-          </div>
-          <div class="info-item">
-            <div class="info-label">Phone</div>
-            <div class="info-value">${client.phone}</div>
-          </div>
-          <div class="info-item">
             <div class="info-label">Account Type</div>
             <div class="info-value">${client.accountType}</div>
-          </div>
-          <div class="info-item">
-            <div class="info-label">Last Contact</div>
-            <div class="info-value">${client.lastContact}</div>
           </div>
         </div>
       </div>
