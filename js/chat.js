@@ -189,7 +189,7 @@ const ChatManager = {
     this.showTypingIndicator();
     
     // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise(resolve => setTimeout(resolve, 5000));
     
     // Remove typing indicator
     this.hideTypingIndicator();
