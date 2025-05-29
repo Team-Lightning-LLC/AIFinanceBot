@@ -1,124 +1,149 @@
-// Demo client data - Updated with simplified information
+// Client data
 const clients = {
   'james-jackson': {
     id: 'james-jackson',
+    clientId: 'P00051',
     name: 'James Jackson',
     company: 'Texas University',
-    accountType: 'UT Saver TSA 403b'
+    accountType: 'UT Saver TSA 403(b)',
+    birthDate: '1990-05-12',
+    age: 35,
+    avatar: 'JJ'
   },
   'eleanor-chen': {
     id: 'eleanor-chen',
     name: 'Dr. Eleanor Chen',
     company: 'Harvard University',
-    accountType: 'Harvard TDA - 403b'
+    accountType: 'Harvard TDA 403(b)',
+    avatar: 'EC'
   }
 };
 
-// Updated predefined responses
-const predefinedResponses = {
-  // James Jackson specific response
-  'jackson-matching': `
-    <div class="message-content">
-      <p><strong>Answer:</strong> Mr. Jackson, based on your enrollment in the UT Saver TSA 403(b) plan through Texas University, there is no employer matching contribution available for this plan. The UT Saver TSA 403(b) is a voluntary supplemental retirement program that allows you to make contributions, but does not include any employer or state matching contributions.</p>
-      <br>
-      <p><strong>Reminders:</strong></p>
-      <ul>
-        <li>Annual contribution limit is $23,000 for 2024</li>
-        <li>Additional catch-up contributions available if over 50</li>
-        <li>Optional Retirement Program (ORP) offers 8.5% employer match if eligible</li>
-      </ul>
-      <br>
-      <p><strong>Citations:</strong></p>
-      <ul>
-        <li>2024-utsaver-highlights-070224.pdf</li>
-        <li>tsa-plandoc-2022.pdf (Section 2.2(a))</li>
-        <li>retsummaryataglance2024.pdf</li>
-      </ul>
-    </div>
-  `,
-
-  // Eleanor Chen specific response
-  'chen-matching': `
-    <div class="message-content">
-      <p><strong>Answer:</strong> Dr. Chen, based on our records, the Harvard University Tax-Deferred Annuity (TDA) 403(b) Plan that you participate in does not offer employer matching contributions. Your TDA Plan is funded solely through your own pre-tax or Roth after-tax contributions that you elect to make through payroll deductions. While Harvard University does make employer contributions to some of their other retirement programs, the TDA Plan is designed as a voluntary supplemental retirement savings vehicle without an employer match component.</p>
-      <br>
-      <p><strong>Workflow:</strong></p>
-      <ol>
-        <li>Review Harvard University TDA Plan Summary Plan Description</li>
-        <li>Confirm TDA Plan contribution structure (employee contributions only)</li>
-        <li>Verify no employer matching provision exists for this plan</li>
-      </ol>
-      <br>
-      <p><strong>Reminders:</strong></p>
-      <ul>
-        <li>Contributions are 100% employee-funded</li>
-        <li>Both pre-tax and Roth after-tax options available</li>
-        <li>Annual IRS contribution limits apply</li>
-      </ul>
-      <br>
-      <p><strong>Citations:</strong></p>
-      <ul>
-        <li>retirement_programs_spd.pdf (Harvard University Retirement Programs Summary Plan Description)</li>
-        <li>harvard_university_retirement_plan_distribution_guide.pdf (Harvard University Retirement Plan Distribution Guide)</li>
-      </ul>
-    </div>
-  `,
-  
-  // Generic fallback response
-  'generic-response': `
-    <div class="message-content">
-      <p>Thank you for your question. I'd be happy to help with that.</p>
-      <br>
-      <p>Based on our company policies and industry regulations, here are the key points to consider:</p>
-      <br>
-      <ul>
-        <li>The specific requirements depend on the client's individual circumstances</li>
-        <li>There may be tax implications to consider before proceeding</li>
-        <li>Documentation requirements will vary based on the account type</li>
-        <li>For this particular situation, I would recommend scheduling a follow-up call with a specialist</li>
-      </ul>
-      <br>
-      <p>Would you like me to arrange that call or provide more specific information about any of these points?</p>
-    </div>
-  `
+// Predefined AI responses
+const aiResponses = {
+  'james-jackson': {
+    'plan-matching': `
+      <div class="ai-response">
+        <div class="response-header">
+          <strong>Answer</strong>
+        </div>
+        <p>Mr. Jackson, based on your enrollment in the UT Saver TSA 403(b) plan through Texas University, there is <strong>no employer matching contribution available</strong> for this plan. The UT Saver TSA 403(b) is a voluntary supplemental retirement program that allows you to make contributions, but does not include any employer or state matching contributions.</p>
+        
+        <div class="response-section">
+          <div class="section-header">
+            <strong>Workflow</strong>
+          </div>
+          <ol>
+            <li>Review UT Saver TSA plan documentation</li>
+            <li>Confirm contribution structure (employee-only contributions)</li>
+            <li>Verify no matching provisions exist for TSA plan</li>
+          </ol>
+        </div>
+        
+        <div class="response-section">
+          <div class="section-header">
+            <strong>Reminders</strong>
+          </div>
+          <ul>
+            <li>Annual contribution limit is $23,000 for 2024</li>
+            <li>Additional catch-up contributions available if over 50</li>
+            <li>Optional Retirement Program (ORP) offers 8.5% employer match if eligible</li>
+          </ul>
+        </div>
+        
+        <div class="response-section">
+          <div class="section-header">
+            <strong>Citations</strong>
+          </div>
+          <ul class="citations">
+            <li>2024-utsaver-highlights-070224.pdf</li>
+            <li>tsa-plandoc-2022.pdf (Section 2.2(a))</li>
+            <li>retsummaryataglance2024.pdf</li>
+          </ul>
+        </div>
+      </div>
+    `
+  },
+  'eleanor-chen': {
+    'plan-matching': `
+      <div class="ai-response">
+        <div class="response-header">
+          <strong>Answer</strong>
+        </div>
+        <p>Dr. Chen, based on our records, the Harvard University Tax-Deferred Annuity (TDA) 403(b) Plan that you participate in <strong>does not offer employer matching contributions</strong>. Your TDA Plan is funded solely through your own pre-tax or Roth after-tax contributions that you elect to make through payroll deductions. While Harvard University does make employer contributions to some of their other retirement programs, the TDA Plan is designed as a voluntary supplemental retirement savings vehicle without an employer match component.</p>
+        
+        <div class="response-section">
+          <div class="section-header">
+            <strong>Workflow</strong>
+          </div>
+          <ol>
+            <li>Review Harvard University TDA Plan Summary Plan Description</li>
+            <li>Confirm TDA Plan contribution structure (employee contributions only)</li>
+            <li>Verify no employer matching provision exists for this plan</li>
+          </ol>
+        </div>
+        
+        <div class="response-section">
+          <div class="section-header">
+            <strong>Reminders</strong>
+          </div>
+          <ul>
+            <li>Contributions are 100% employee-funded</li>
+            <li>Both pre-tax and Roth after-tax options available</li>
+            <li>Annual IRS contribution limits apply</li>
+          </ul>
+        </div>
+        
+        <div class="response-section">
+          <div class="section-header">
+            <strong>Citations</strong>
+          </div>
+          <ul class="citations">
+            <li>retirement_programs_spd.pdf (Harvard University Retirement Programs Summary Plan Description)</li>
+            <li>harvard_university_retirement_plan_distribution_guide.pdf (Harvard University Retirement Plan Distribution Guide)</li>
+          </ul>
+        </div>
+      </div>
+    `
+  }
 };
 
-// Updated initial messages for each client
-const initialMessages = {
-  'james-jackson': [
-    {
-      content: "Does the client's plan match their contributions and how does that work in general?",
-      isUser: true,
-      timestamp: "12:30 PM"
-    }
-  ],
-  'eleanor-chen': [
-    {
-      content: "Does the client's plan match their contributions and how does that work in general?",
-      isUser: true,
-      timestamp: "12:30 PM"
-    }
-  ]
-};
-
-// Updated predefined AI responses based on client
-function getAIResponse(message, clientId) {
-  message = message.toLowerCase();
+// Generate AI response based on message content and client
+function generateAIResponse(message, clientId) {
+  const lowerMessage = message.toLowerCase();
   
-  // James Jackson specific responses
-  if (clientId === 'james-jackson') {
-    if (message.includes("match") || message.includes("contribution") || message.includes("plan")) {
-      return predefinedResponses['jackson-matching'];
-    }
+  // Check for plan matching questions
+  if (lowerMessage.includes('plan match') || lowerMessage.includes('matching') || lowerMessage.includes('contribution')) {
+    return aiResponses[clientId]?.['plan-matching'] || getGenericResponse();
   }
   
-  // Eleanor Chen specific responses
-  if (clientId === 'eleanor-chen') {
-    if (message.includes("match") || message.includes("contribution") || message.includes("plan")) {
-      return predefinedResponses['chen-matching'];
-    }
-  }
-  
-  // Generic fallback response
-  return predefinedResponses['generic-response'];
+  return getGenericResponse();
 }
+
+function getGenericResponse() {
+  return `
+    <div class="ai-response">
+      <div class="response-header">
+        <strong>Answer</strong>
+      </div>
+      <p>I'd be happy to help you with that question. Based on the client's plan details, let me provide you with the most relevant information.</p>
+      
+      <div class="response-section">
+        <div class="section-header">
+          <strong>Recommendations</strong>
+        </div>
+        <ul>
+          <li>Review the specific plan documentation for detailed provisions</li>
+          <li>Consider scheduling a follow-up consultation if additional details are needed</li>
+          <li>Ensure all regulatory compliance requirements are met</li>
+        </ul>
+      </div>
+    </div>
+  `;
+}
+
+// Initial consultation questions
+const initialQuestions = {
+  'james-jackson': "Does the client's plan match their contributions and how does that work in general?",
+  'eleanor-chen': "Does the client's plan match their contributions and how does that work in general?"
+};
