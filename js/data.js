@@ -1,96 +1,70 @@
-// Demo client data
+// Demo client data - Updated with simplified information
 const clients = {
-  'John Smith': {
-    id: 'John Smith',
+  'james-jackson': {
+    id: 'james-jackson',
     name: 'James Jackson',
-    company: 'University of Texas',
-    email: 'JamesJackson021@UT.edu',
-    phone: '+1 (555) 123-4567',
-    accountType: 'UT Saver TSA - 403b',
-    lastContact: 'April 28, 2025'
+    company: 'Texas University',
+    accountType: 'UT Saver TSA 403b'
   },
   'eleanor-chen': {
     id: 'eleanor-chen',
     name: 'Dr. Eleanor Chen',
     company: 'Harvard University',
-    email: 'echen@fas.harvard.edu',
-    phone: '+1 (555) 123-4567',
-    accountType: 'Harvard TDA - 403b',
-    lastContact: 'April 28, 2025',
-    inquiry: 'Roth IRA for Daughter'
+    accountType: 'Harvard TDA - 403b'
   }
 };
 
-// Predefined chat responses for demo
+// Updated predefined responses
 const predefinedResponses = {
-  // John Smith responses
-  'roth-ira': `
+  // James Jackson specific response
+  'jackson-matching': `
     <div class="message-content">
-      <p>Yes, James, you are eligible to take a loan from your UT Saver TSA (403b) plan as a current employee of Texas University. The maximum loan amount available to you would be the lesser of $50,000 or 50% of your vested account balance.</p>
+      <p><strong>Answer:</strong> Mr. Jackson, based on your enrollment in the UT Saver TSA 403(b) plan through Texas University, there is no employer matching contribution available for this plan. The UT Saver TSA 403(b) is a voluntary supplemental retirement program that allows you to make contributions, but does not include any employer or state matching contributions.</p>
       <br>
+      <p><strong>Reminders:</strong></p>
       <ul>
-        <li><strong>Eligibility:</strong> The daughter must have earned income from working</li>
-        <li><strong>Contribution Limit:</strong> The lesser of $6,500 or the total of her earned income for the year</li>
-        <li><strong>Account Control:</strong> John will manage the account until his daughter reaches the age of majority (18 or 21, depending on state)</li>
-        <li><strong>Tax Benefits:</strong> Tax-free growth and tax-free qualified withdrawals in retirement</li>
+        <li>Annual contribution limit is $23,000 for 2024</li>
+        <li>Additional catch-up contributions available if over 50</li>
+        <li>Optional Retirement Program (ORP) offers 8.5% employer match if eligible</li>
       </ul>
       <br>
-      <p>Would you like me to provide more specific information about the documentation needed to open a custodial Roth IRA?</p>
+      <p><strong>Citations:</strong></p>
+      <ul>
+        <li>2024-utsaver-highlights-070224.pdf</li>
+        <li>tsa-plandoc-2022.pdf (Section 2.2(a))</li>
+        <li>retsummaryataglance2024.pdf</li>
+      </ul>
     </div>
   `,
 
-  // Eleanor Chen responses
-  'daughter-roth': `
+  // Eleanor Chen specific response
+  'chen-matching': `
     <div class="message-content">
-      <p><strong>Yes</strong>, Dr. Chen can contribute money to her daughter's Roth IRA as long as the <b>total contributions don't exceed her daughter's earned income for the year or $7,000</b> (2024 limit), whichever is less. <b>Since her daughter is 13 and earning money from work, a custodial Roth IRA can be opened with Dr. Chen as the custodian</b> until her daughter reaches the age of majority.
-</p>
+      <p><strong>Answer:</strong> Dr. Chen, based on our records, the Harvard University Tax-Deferred Annuity (TDA) 403(b) Plan that you participate in does not offer employer matching contributions. Your TDA Plan is funded solely through your own pre-tax or Roth after-tax contributions that you elect to make through payroll deductions. While Harvard University does make employer contributions to some of their other retirement programs, the TDA Plan is designed as a voluntary supplemental retirement savings vehicle without an employer match component.</p>
       <br>
-      <p><b>Workflow:</b></p>
-      <p>1. Verify the minor has earned income</b></p>
-      <p>2. Document the minor's earnings (especially important for informal work)</p>
-      <p>3. Open a custodial Roth IRA with an adult as custodian</p>
-      <p>4. Make contributions that don't exceed the minor's earned income or annual limit </p>
-      <p>5. Maintain account until child reaches age of majority (18-21 depending on state)</p>
+      <p><strong>Workflow:</strong></p>
+      <ol>
+        <li>Review Harvard University TDA Plan Summary Plan Description</li>
+        <li>Confirm TDA Plan contribution structure (employee contributions only)</li>
+        <li>Verify no employer matching provision exists for this plan</li>
+      </ol>
       <br>
-      <p><strong>Clarifications:</strong> 
-      <br>
-      <p>1. The source of the contributions doesn't matter (can be from the parent), but the total cannot exceed the child's actual earned income for the year.</p>
-      <p>2. The custodial Roth IRA will need to be transferred to a standard Roth IRA in the daughter's name when she reaches age of majority.
-      <br>
-      <br>
-      <p><strong>Citations:</strong> 
-      <p>Based on general Roth IRA regulations and financial industry standards found in web search results regarding custodial Roth IRAs. </p>
-    </div>
-  `,
-  '403b-impact': `
-    <div class="message-content">
-      <p><strong>No</strong>, opening and contributing to a custodial Roth IRA for her daughter will not affect Dr. Chen's 403(b) plan in any way.</p>
-      <br>
+      <p><strong>Reminders:</strong></p>
       <ul>
-        <li>The <strong>403(b) plan</strong> is tied to Dr. Chen's <strong>own employment</strong> and income through Harvard University.</li>
-        <li><strong>The Roth IRA</strong> for her daughter is an entirely <strong>separate tax-advantaged account</strong>, established under the daughter's Social Security Number, not Dr. Chen's.</li>
-        <li>Contributions to the custodial Roth IRA are <strong>not aggregated with 403(b)</strong> contributions for IRS limits—they are governed under separate code sections.</li>
+        <li>Contributions are 100% employee-funded</li>
+        <li>Both pre-tax and Roth after-tax options available</li>
+        <li>Annual IRS contribution limits apply</li>
       </ul>
       <br>
-      <p><strong>Key Consideration:</strong> There is <strong>no IRS interaction or conflict</strong> between a parent's qualified retirement plan and a minor child's custodial Roth IRA as long as contribution limits and earned income rules are followed.</p>
-    </div>
-  `,
-  'roth-401k-question': `
-    <div class="message-content">
-      <p>Regarding moving the Roth IRA to a 401(k):</p>
-      <br>
-      <p><strong>1. Future options:</strong> When the daughter gets older and has her own 401(k) through an employer, she can't directly "move" her Roth IRA into her 401(k). These are different account types with different tax treatments.</p>
-      <br>
-      <p><strong>2. What she can do:</strong></p>
+      <p><strong>Citations:</strong></p>
       <ul>
-        <li>Keep both accounts: She can maintain her Roth IRA and contribute to her future employer's 401(k) separately</li>
-        <li>Roll a future 401(k) to Roth IRA: If she leaves an employer, she could roll her Roth 401(k) contributions INTO her existing Roth IRA, but not the other way around</li>
-        <li>Contribute to both: Once employed, she can contribute to both a 401(k) and Roth IRA simultaneously (subject to income limits)</li>
+        <li>retirement_programs_spd.pdf (Harvard University Retirement Programs Summary Plan Description)</li>
+        <li>harvard_university_retirement_plan_distribution_guide.pdf (Harvard University Retirement Plan Distribution Guide)</li>
       </ul>
-      <br>
-      <p><strong>3. Recommendation:</strong> The Roth IRA is an excellent long-term wealth-building vehicle with more investment flexibility than most 401(k) plans. I would recommend keeping it separate from any future 401(k) to maximize tax-advantaged savings opportunities.</p>
     </div>
   `,
+  
+  // Generic fallback response
   'generic-response': `
     <div class="message-content">
       <p>Thank you for your question. I'd be happy to help with that.</p>
@@ -109,42 +83,40 @@ const predefinedResponses = {
   `
 };
 
-// Initial messages for each client
+// Updated initial messages for each client
 const initialMessages = {
-  'john-smith': [
+  'james-jackson': [
     {
-      content: "Client is calling about opening a Roth IRA for his teenage daughter who has started working part-time. He wants to know if this is possible and what the requirements would be.",
+      content: "Does the client's plan match their contributions and how does that work in general?",
       isUser: true,
       timestamp: "12:30 PM"
     }
   ],
   'eleanor-chen': [
     {
-      content: "Client is calling in and wants to open a Roth for their daughter. Daughter is 13 and making a bit of money from working on her own. Can Dr. Chen contribute money to her daughter's account?",
+      content: "Does the client's plan match their contributions and how does that work in general?",
       isUser: true,
       timestamp: "12:30 PM"
     }
   ]
 };
 
-// Predefined AI responses based on keywords
-function getAIResponse(message) {
+// Updated predefined AI responses based on client
+function getAIResponse(message, clientId) {
   message = message.toLowerCase();
   
-  // Eleanor Chen specific responses
-  if (message.includes("daughter") && message.includes("roth")) {
-    return predefinedResponses['daughter-roth'];
-  }
-  if (message.includes("403b") || message.includes("403(b)") || message.includes("mess")) {
-    return predefinedResponses['403b-impact'];
-  }
-  if (message.includes("401k") || message.includes("401(k)") || message.includes("move")) {
-    return predefinedResponses['roth-401k-question'];
+  // James Jackson specific responses
+  if (clientId === 'james-jackson') {
+    if (message.includes("match") || message.includes("contribution") || message.includes("plan")) {
+      return predefinedResponses['jackson-matching'];
+    }
   }
   
-  // John Smith specific responses
-  if (message.includes("roth") && message.includes("ira")) {
-    return predefinedResponses['roth-ira'];
+  // Eleanor Chen specific responses
+  if (clientId === 'eleanor-chen') {
+    if (message.includes("match") || message.includes("contribution") || message.includes("plan")) {
+      return predefinedResponses['chen-matching'];
+    }
   }
   
   // Generic fallback response
