@@ -1,12 +1,12 @@
 // Demo client data
 const clients = {
-  'john-smith': {
-    id: 'Katelyn-Lee',
-    name: 'Katelyn-Lee',
-    company: 'Truist',
-    email: 'Katelyn-Lee002@Truist.com',
+  'James Jackson': {
+    id: 'James Jackson',
+    name: 'James Jackson',
+    company: 'University of Texas',
+    email: 'JamesJackson021@UT.edu',
     phone: '+1 (555) 123-4567',
-    accountType: 'Truist 457(b) Plan',
+    accountType: 'UT Saver TSA - 403b',
     lastContact: 'April 28, 2025'
   },
   'eleanor-chen': {
@@ -26,7 +26,7 @@ const predefinedResponses = {
   // John Smith responses
   'roth-ira': `
     <div class="message-content">
-      <p>Yes, John can open a custodial Roth IRA for his teenage daughter. Here are the key points:</p>
+      <p>Yes, James, you are eligible to take a loan from your UT Saver TSA (403b) plan as a current employee of Texas University. The maximum loan amount available to you would be the lesser of $50,000 or 50% of your vested account balance.</p>
       <br>
       <ul>
         <li><strong>Eligibility:</strong> The daughter must have earned income from working</li>
