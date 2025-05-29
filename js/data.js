@@ -142,8 +142,7 @@ function getGenericResponse() {
   `;
 }
 
-// Initial consultation questions
+// Initial consultation questions (only for Eleanor Chen now)
 const initialQuestions = {
-  'james-jackson': "Does the client's plan match their contributions and how does that work in general?",
   'eleanor-chen': "Does the client's plan match their contributions and how does that work in general?"
 };
