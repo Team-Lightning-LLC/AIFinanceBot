@@ -226,6 +226,68 @@ const ChatManager = {
     this.scrollToBottom();
   },
   
-  // Hide typing indicator
-  hideTypingIndicator() {
-    const
+// Hide typing indicator
+ hideTypingIndicator() {
+   const typingEl = document.getElementById('typing-indicator');
+   if (typingEl) {
+     typingEl.remove();
+   }
+ },
+ 
+ // Update sidebar selection
+ updateSidebarSelection(chatId) {
+   document.querySelectorAll('.chat-item').forEach(item => {
+     item.classList.remove('active');
+   });
+   
+   const activeItem = document.querySelector(`[data-chat-id="${chatId}"]`);
+   if (activeItem) {
+     activeItem.classList.add('active');
+   }
+ },
+ 
+ // Scroll to bottom of messages
+ scrollToBottom() {
+   const messagesContainer = document.getElementById('chat-messages');
+   messagesContainer.scrollTop = messagesContainer.scrollHeight;
+ },
+ 
+ // Format time
+ formatTime(date) {
+   return date.toLocaleTimeString([], { 
+     hour: '2-digit', 
+     minute: '2-digit',
+     hour12: true 
+   });
+ },
+ 
+ // Generate export summary
+ generateExportSummary() {
+   if (!this.activeChat) return '';
+   
+   const client = this.activeChat.client;
+   const messages = this.activeChat.messages;
+   const startTime = this.formatTime(this.activeChat.startTime);
+   
+   let summary = `CONSULTATION SUMMARY\n\n`;
+   summary += `Client: ${client.name} (${client.clientId || 'N/A'})\n`;
+   summary += `Company: ${client.company}\n`;
+   summary += `Account Type: ${client.accountType}\n`;
+   summary += `Date: ${new Date().toLocaleDateString()}\n`;
+   summary += `Time: ${startTime}\n\n`;
+   
+   summary += `CONVERSATION TRANSCRIPT:\n`;
+   messages.forEach((msg, index) => {
+     const speaker = msg.isUser ? 'ADVISOR' : 'ASSISTANT';
+     const cleanContent = msg.content.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+     summary += `${index + 1}. ${speaker}: ${cleanContent}\n\n`;
+   });
+   
+   summary += `NEXT STEPS:\n`;
+   summary += `- Follow up on any pending questions\n`;
+   summary += `- Update client records in CRM\n`;
+   summary += `- Schedule additional consultations if needed\n`;
+   
+   return summary;
+ }
+};
