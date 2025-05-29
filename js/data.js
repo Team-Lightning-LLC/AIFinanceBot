@@ -1,7 +1,7 @@
 // Demo client data
 const clients = {
-  'James Jackson': {
-    id: 'James Jackson',
+  'John Smith': {
+    id: 'John Smith',
     name: 'James Jackson',
     company: 'University of Texas',
     email: 'JamesJackson021@UT.edu',
