@@ -16,6 +16,13 @@ const clients = {
     company: 'Harvard University',
     accountType: 'Harvard TDA 403(b)',
     avatar: 'EC'
+  },
+  'blank': {
+    id: 'blank',
+    name: 'New Client',
+    company: 'Company Name',
+    accountType: 'Account Type',
+    avatar: 'NC'
   }
 };
 
@@ -141,8 +148,3 @@ function getGenericResponse() {
     </div>
   `;
 }
-
-// Initial consultation questions (only for Eleanor Chen now)
-const initialQuestions = {
-  'eleanor-chen': "Does the client's plan match their contributions and how does that work in general?"
-};
