@@ -34,16 +34,17 @@ const aiResponses = {
         <div class="response-header">
           <strong>Answer</strong>
         </div>
-        <p>Mr. Jackson, based on your enrollment in the UT Saver TSA 403(b) plan through Texas University, there is <strong>no employer matching contribution available</strong> for this plan. The UT Saver TSA 403(b) is a voluntary supplemental retirement program that allows you to make contributions, but does not include any employer or state matching contributions.</p>
+        <p>James, based on your UT Saver TSA 403(b) plan, you can borrow up to $50,000 or 50% of your vested account balance, whichever is less. The minimum loan amount isn't explicitly stated in your plan document, but is typically $1,000 for most 403(b) plans.</p>
         
         <div class="response-section">
           <div class="section-header">
             <strong>Workflow</strong>
           </div>
           <ol>
-            <li>Review UT Saver TSA plan documentation</li>
-            <li>Confirm contribution structure (employee-only contributions)</li>
-            <li>Verify no matching provisions exist for TSA plan</li>
+            <li>Complete the loan application form</li>
+            <li>Submit the completed application to your plan administrator</li>
+            <li>Once approved, receive loan proceeds</li>
+            <li>Begin repayment according to the terms established in your loan agreement</li>
           </ol>
         </div>
         
@@ -52,9 +53,9 @@ const aiResponses = {
             <strong>Reminders</strong>
           </div>
           <ul>
-            <li>Annual contribution limit is $23,000 for 2024</li>
-            <li>Additional catch-up contributions available if over 50</li>
-            <li>Optional Retirement Program (ORP) offers 8.5% employer match if eligible</li>
+            <li>Outstanding loans reduce maximum borrowing amount</li>
+            <li>Loans must be repaid with interest</li>
+            <li>Early repayment may be available without penalty</li>
           </ul>
         </div>
         
@@ -63,9 +64,8 @@ const aiResponses = {
             <strong>Citations</strong>
           </div>
           <ul class="citations">
-            <li>2024-utsaver-highlights-070224.pdf</li>
-            <li>tsa-plandoc-2022.pdf (Section 2.2(a))</li>
-            <li>retsummaryataglance2024.pdf</li>
+            <li>tsa-plandoc-2022.pdf (Maximum loan amount: $50,000 or 50% of vested account balance)</li>
+            <li>retirement_programs_spd.pdf (General loan provisions for 403(b) plans)</li>
           </ul>
         </div>
       </div>
@@ -77,16 +77,18 @@ const aiResponses = {
         <div class="response-header">
           <strong>Answer</strong>
         </div>
-        <p>Dr. Chen, based on our records, the Harvard University Tax-Deferred Annuity (TDA) 403(b) Plan that you participate in <strong>does not offer employer matching contributions</strong>. Your TDA Plan is funded solely through your own pre-tax or Roth after-tax contributions that you elect to make through payroll deductions. While Harvard University does make employer contributions to some of their other retirement programs, the TDA Plan is designed as a voluntary supplemental retirement savings vehicle without an employer match component.</p>
+        <p> Dr. Chen, based on your Harvard TDA - 403b plan, you can borrow a minimum of $1,000 up to a maximum of 50% of your account balance, not to exceed $50,000. The $50,000 limit would be reduced if you've had any other TDA loans outstanding in the past 12 months. You're currently showing no active loans in our system.</p>
         
         <div class="response-section">
           <div class="section-header">
             <strong>Workflow</strong>
           </div>
           <ol>
-            <li>Review Harvard University TDA Plan Summary Plan Description</li>
-            <li>Confirm TDA Plan contribution structure (employee contributions only)</li>
-            <li>Verify no employer matching provision exists for this plan</li>
+            <li>Verify loan eligibility (must be actively employed)</li>
+            <li>Determine maximum loan amount (50% of TDA accumulations, up to $50,000)</li>
+            <li>Select loan type (general-purpose or residential)</li>
+            <li>Complete loan application with spousal consent if married</li>
+            <li>Pay applicable loan fees ($75 for general-purpose, $125 for residential)</li>
           </ol>
         </div>
         
@@ -95,9 +97,9 @@ const aiResponses = {
             <strong>Reminders</strong>
           </div>
           <ul>
-            <li>Contributions are 100% employee-funded</li>
-            <li>Both pre-tax and Roth after-tax options available</li>
-            <li>Annual IRS contribution limits apply</li>
+            <li>Maximum of two outstanding loans allowed</li>
+            <li>Loan repayment period: 5 years (general) or 10 years (residential)</li>
+            <li>$25 annual maintenance fee applies</li>
           </ul>
         </div>
         
