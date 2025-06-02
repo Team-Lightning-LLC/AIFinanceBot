@@ -13,36 +13,36 @@ class AssistantAI {
   }
   
   // Add this new method
-  addExistingConsultations() {
-    // Add Dr. Chen's consultation to sidebar (existing consultation)
-    const chenConsultation = ChatManager.createConsultation('eleanor-chen');
-    if (chenConsultation) {
-      // Make it look like an existing consultation
-      chenConsultation.startTime = new Date(Date.now() - 45 * 60 * 1000); // 45 minutes ago
-      chenConsultation.messages = [
-        {
-          id: 'msg-1',
-          content: "How much can I borrow from my 403b??",
-          isUser: true,
-          timestamp: new Date(Date.now() - 44 * 60 * 1000) // 44 minutes ago
-        },
-        {
-          id: 'msg-2',
-          content: aiResponses['eleanor-chen']['plan-matching'],
-          isUser: false,
-          timestamp: new Date(Date.now() - 43 * 60 * 1000) // 43 minutes ago
-        }
-      ];
-      
-      // Add to sidebar with custom preview
-      const chatItem = ChatManager.addToSidebar(chenConsultation);
-      // Update the preview text to show it has content
-      const previewEl = chatItem.querySelector('.chat-preview');
-      if (previewEl) {
-        previewEl.textContent = '403(b) Loan';
+addExistingConsultations() {
+  // Add Dr. Chen's consultation to sidebar (existing consultation)
+  const chenConsultation = ChatManager.createConsultation('eleanor-chen');
+  if (chenConsultation) {
+    // Make it look like an existing consultation
+    chenConsultation.startTime = new Date(Date.now() - 45 * 60 * 1000); // 45 minutes ago
+    chenConsultation.messages = [
+      {
+        id: 'msg-1',
+        content: "How much can I borrow from my 403b??", // Updated question
+        isUser: true,
+        timestamp: new Date(Date.now() - 44 * 60 * 1000) // 44 minutes ago
+      },
+      {
+        id: 'msg-2',
+        content: aiResponses['eleanor-chen']['borrowing'],
+        isUser: false,
+        timestamp: new Date(Date.now() - 43 * 60 * 1000) // 43 minutes ago
       }
+    ];
+    
+    // Add to sidebar with custom preview
+    const chatItem = ChatManager.addToSidebar(chenConsultation);
+    // Update the preview text to show it has content
+    const previewEl = chatItem.querySelector('.chat-preview');
+    if (previewEl) {
+      previewEl.textContent = '403(b) loan inquiry completed';
     }
   }
+}
   
   startIncomingCallTimer() {
     // Show incoming call after 30 seconds
