@@ -121,9 +121,9 @@ const aiResponses = {
 function generateAIResponse(message, clientId) {
   const lowerMessage = message.toLowerCase();
   
-  // Check for plan matching questions
-  if (lowerMessage.includes('plan match') || lowerMessage.includes('matching') || lowerMessage.includes('contribution')) {
-    return aiResponses[clientId]?.['plan-matching'] || getGenericResponse();
+ // Check for borrowing/loan questions
+  if (lowerMessage.includes('borrow') || lowerMessage.includes('loan') || lowerMessage.includes('403b')) {
+    return aiResponses[clientId]?.['borrowing'] || getGenericResponse();
   }
   
   return getGenericResponse();
