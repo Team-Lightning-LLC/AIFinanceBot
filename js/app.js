@@ -2,11 +2,35 @@
 class AssistantAI {
   constructor() {
     this.init();
+    this.startIncomingCallTimer(); // Add this line
   }
   
   init() {
     this.bindEvents();
     this.showWelcomeState();
+    this.hideClientBanner(); // Hide banner initially
+  }
+  
+  // Add this new method
+  startIncomingCallTimer() {
+    // Show incoming call after 30 seconds
+    setTimeout(() => {
+      this.showIncomingCall();
+    }, 30000); // 30 seconds = 30000ms
+  }
+  
+  // Add this new method
+  showIncomingCall() {
+    const banner = document.getElementById('client-banner');
+    banner.style.display = 'flex';
+    banner.style.transform = 'translateY(-100%)';
+    banner.style.opacity = '0';
+    
+    // Animate in
+    setTimeout(() => {
+      banner.style.transform = 'translateY(0)';
+      banner.style.opacity = '1';
+    }, 100);
   }
   
   bindEvents() {
@@ -91,20 +115,25 @@ class AssistantAI {
   showWelcomeState() {
     document.getElementById('welcome-state').style.display = 'block';
     document.getElementById('chat-interface').style.display = 'none';
-    document.getElementById('client-banner').style.display = 'flex';
+    // Don't show client banner here anymore
+  }
+  
+  hideClientBanner() {
+    const banner = document.getElementById('client-banner');
+    banner.style.display = 'none';
   }
   
   acceptClient(clientId) {
-    this.hideClientBanner();
+    this.hideClientBannerWithAnimation();
     this.startNewConsultation(clientId, true);
   }
   
   declineClient() {
-    this.hideClientBanner();
+    this.hideClientBannerWithAnimation();
     this.showDeclineMessage();
   }
   
-  hideClientBanner() {
+  hideClientBannerWithAnimation() {
     const banner = document.getElementById('client-banner');
     banner.style.transform = 'translateY(-100%)';
     banner.style.opacity = '0';
