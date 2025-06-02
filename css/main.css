@@ -270,10 +270,10 @@ body {
   background: linear-gradient(135deg, var(--warning-light) 0%, #fbbf24 100%);
   border-bottom: 1px solid #f59e0b;
   padding: 16px 24px;
-  display: flex;
+  display: none; /* Start hidden */
   align-items: center;
   justify-content: space-between;
-  transition: var(--transition-slow);
+  transition: all 0.3s ease; /* Smooth transition */
   animation: slideDown 0.3s ease-out;
 }
 
