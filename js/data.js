@@ -29,7 +29,7 @@ const clients = {
 // Predefined AI responses
 const aiResponses = {
   'james-jackson': {
-    'plan-matching': `
+    'borrow': `
       <div class="ai-response">
         <div class="response-header">
           <strong>Answer</strong>
@@ -72,7 +72,7 @@ const aiResponses = {
     `
   },
   'eleanor-chen': {
-    'plan-matching': `
+    'borrow': `
       <div class="ai-response">
         <div class="response-header">
           <strong>Answer</strong>
