@@ -2,24 +2,55 @@
 class AssistantAI {
   constructor() {
     this.init();
-    this.startIncomingCallTimer(); // Add this line
+    this.startIncomingCallTimer();
+    this.addExistingConsultations(); // Add this line
   }
   
   init() {
     this.bindEvents();
     this.showWelcomeState();
-    this.hideClientBanner(); // Hide banner initially
+    this.hideClientBanner();
   }
   
   // Add this new method
+  addExistingConsultations() {
+    // Add Dr. Chen's consultation to sidebar (existing consultation)
+    const chenConsultation = ChatManager.createConsultation('eleanor-chen');
+    if (chenConsultation) {
+      // Make it look like an existing consultation
+      chenConsultation.startTime = new Date(Date.now() - 45 * 60 * 1000); // 45 minutes ago
+      chenConsultation.messages = [
+        {
+          id: 'msg-1',
+          content: "Does the client's plan match their contributions and how does that work in general?",
+          isUser: true,
+          timestamp: new Date(Date.now() - 44 * 60 * 1000) // 44 minutes ago
+        },
+        {
+          id: 'msg-2',
+          content: aiResponses['eleanor-chen']['plan-matching'],
+          isUser: false,
+          timestamp: new Date(Date.now() - 43 * 60 * 1000) // 43 minutes ago
+        }
+      ];
+      
+      // Add to sidebar with custom preview
+      const chatItem = ChatManager.addToSidebar(chenConsultation);
+      // Update the preview text to show it has content
+      const previewEl = chatItem.querySelector('.chat-preview');
+      if (previewEl) {
+        previewEl.textContent = 'Plan matching discussion completed';
+      }
+    }
+  }
+  
   startIncomingCallTimer() {
     // Show incoming call after 30 seconds
     setTimeout(() => {
       this.showIncomingCall();
-    }, 30000); // 30 seconds = 30000ms
+    }, 30000);
   }
   
-  // Add this new method
   showIncomingCall() {
     const banner = document.getElementById('client-banner');
     banner.style.display = 'flex';
@@ -43,9 +74,9 @@ class AssistantAI {
       this.declineClient();
     });
     
-    // Manual new consultation
+    // Manual new consultation - now creates blank chat
     document.getElementById('manual-new-chat-btn')?.addEventListener('click', () => {
-      this.startNewConsultation('eleanor-chen');
+      this.startBlankConsultation();
     });
     
     // Message input
@@ -115,7 +146,6 @@ class AssistantAI {
   showWelcomeState() {
     document.getElementById('welcome-state').style.display = 'block';
     document.getElementById('chat-interface').style.display = 'none';
-    // Don't show client banner here anymore
   }
   
   hideClientBanner() {
@@ -143,7 +173,6 @@ class AssistantAI {
   }
   
   showDeclineMessage() {
-    // Show a brief message that client was declined
     const welcomeContent = document.querySelector('.welcome-content');
     const originalContent = welcomeContent.innerHTML;
     
@@ -161,33 +190,43 @@ class AssistantAI {
       </div>
     `;
     
-    // Restore original content after 3 seconds
     setTimeout(() => {
       welcomeContent.innerHTML = originalContent;
     }, 3000);
+  }
+  
+  // Add this new method for blank consultations
+  startBlankConsultation() {
+    // Create a generic consultation
+    const blankConsultation = {
+      id: `consultation-${Date.now()}`,
+      clientId: 'blank',
+      client: {
+        id: 'blank',
+        name: 'New Client',
+        company: 'Company Name',
+        accountType: 'Account Type',
+        avatar: 'NC'
+      },
+      startTime: new Date(),
+      messages: [],
+      isActive: true
+    };
+    
+    ChatManager.chats.set(blankConsultation.id, blankConsultation);
+    ChatManager.addToSidebar(blankConsultation);
+    ChatManager.activateConsultation(blankConsultation.id);
   }
   
   startNewConsultation(clientId, isAccepted = false) {
     const consultation = ChatManager.createConsultation(clientId);
     if (!consultation) return;
     
-    // Add to sidebar
     ChatManager.addToSidebar(consultation);
-    
-    // Activate consultation
     ChatManager.activateConsultation(consultation.id);
     
-    // No auto-fill for James Jackson - user must type the question manually
-    // For Eleanor Chen (manual new consultation), we can still auto-fill if desired
-    if (isAccepted && clientId === 'eleanor-chen') {
-      setTimeout(() => {
-        const initialQuestion = initialQuestions[clientId];
-        if (initialQuestion) {
-          ChatManager.addMessage(consultation.id, initialQuestion, true);
-          ChatManager.processAIResponse(initialQuestion, clientId);
-        }
-      }, 500);
-    }
+    // No auto-fill for James Jackson
+    // No auto-fill for Eleanor Chen either now
   }
   
   sendMessage() {
@@ -196,14 +235,11 @@ class AssistantAI {
     
     if (!message || !ChatManager.activeChat) return;
     
-    // Add user message
     ChatManager.addMessage(ChatManager.activeChat.id, message, true);
     
-    // Clear input
     messageInput.value = '';
     this.autoResizeTextarea(messageInput);
     
-    // Process AI response
     ChatManager.processAIResponse(message, ChatManager.activeChat.clientId);
   }
   
