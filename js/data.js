@@ -29,18 +29,19 @@ const clients = {
 // Predefined AI responses
 const aiResponses = {
   'james-jackson': {
-    'borrow': `
+    'borrowing': `
       <div class="ai-response">
         <div class="response-header">
           <strong>Answer</strong>
         </div>
-        <p>James, based on your UT Saver TSA 403(b) plan, you can borrow up to $50,000 or 50% of your vested account balance, whichever is less. The minimum loan amount isn't explicitly stated in your plan document, but is typically $1,000 for most 403(b) plans.</p>
+        <p>James, based on your UT Saver TSA 403(b) plan, you can borrow up to <strong>$50,000 or 50% of your vested account balance, whichever is less</strong>. The minimum loan amount isn't explicitly stated in your plan document, but is typically $1,000 for most 403(b) plans.</p>
         
         <div class="response-section">
           <div class="section-header">
             <strong>Workflow</strong>
           </div>
           <ol>
+            <li>Contact your plan provider to request a loan application</li>
             <li>Complete the loan application form</li>
             <li>Submit the completed application to your plan administrator</li>
             <li>Once approved, receive loan proceeds</li>
@@ -72,12 +73,12 @@ const aiResponses = {
     `
   },
   'eleanor-chen': {
-    'borrow': `
+    'borrowing': `
       <div class="ai-response">
         <div class="response-header">
           <strong>Answer</strong>
         </div>
-        <p> Dr. Chen, based on your Harvard TDA - 403b plan, you can borrow a minimum of $1,000 up to a maximum of 50% of your account balance, not to exceed $50,000. The $50,000 limit would be reduced if you've had any other TDA loans outstanding in the past 12 months. You're currently showing no active loans in our system.</p>
+        <p>Dr. Chen, based on your Harvard TDA - 403(b) plan, you can borrow a <strong>minimum of $1,000 up to a maximum of 50% of your account balance, not to exceed $50,000</strong>. The $50,000 limit would be reduced if you've had any other TDA loans outstanding in the past 12 months. You're currently showing no active loans in our system.</p>
         
         <div class="response-section">
           <div class="section-header">
@@ -108,8 +109,8 @@ const aiResponses = {
             <strong>Citations</strong>
           </div>
           <ul class="citations">
-            <li>retirement_programs_spd.pdf (Harvard University Retirement Programs Summary Plan Description)</li>
-            <li>harvard_university_retirement_plan_distribution_guide.pdf (Harvard University Retirement Plan Distribution Guide)</li>
+            <li>Harvard University Tax-Deferred Annuity (TDA) Plan Summary Plan Description</li>
+            <li>Synthetic Participant Database (P00052 - Dr. Eleanor Chen)</li>
           </ul>
         </div>
       </div>
@@ -121,7 +122,7 @@ const aiResponses = {
 function generateAIResponse(message, clientId) {
   const lowerMessage = message.toLowerCase();
   
- // Check for borrowing/loan questions
+  // Check for borrowing/loan questions
   if (lowerMessage.includes('borrow') || lowerMessage.includes('loan') || lowerMessage.includes('403b')) {
     return aiResponses[clientId]?.['borrowing'] || getGenericResponse();
   }
