@@ -46,7 +46,7 @@ const aiResponses = {
         
         <div class="response-section">
           <div class="section-header">
-            <strong>Workflow</strong>
+            <strong>Next Steps</strong>
           </div>
           <ol>
             <li>Contact your plan provider to request a loan application</li>
@@ -90,7 +90,7 @@ const aiResponses = {
         
         <div class="response-section">
           <div class="section-header">
-            <strong>Workflow</strong>
+            <strong>Next Steps</strong>
           </div>
           <ol>
             <li>Verify loan eligibility (must be actively employed)</li>
@@ -134,7 +134,7 @@ const aiResponses = {
         
         <div class="response-section">
           <div class="section-header">
-            <strong>Workflow</strong>
+            <strong>Next Steps</strong>
           </div>
           <ol>
             <li>Submit certified death certificate and estate documentation to verify your legal standing</li>
@@ -168,6 +168,48 @@ const aiResponses = {
         </div>
       </div>
     `
+  },
+  'jessica-holmes': {
+    '403b to 401k': `
+      <div class="ai-response">
+        <div class="response-header">
+          <strong>Answer</strong>
+        </div>
+        <p>Ms. Holmes, <b>as a non-spouse beneficiary of your uncle's 403(b), IRS regulations do not permit you to roll these funds directly into your personal 401(k). </b>The inherited 403(b) must remain a separate account designated as an "Inherited 403(b)" with its own distribution rules. You would need to take distributions from the inherited account according to the beneficiary rules</p>
+        
+        <div class="response-section">
+          <div class="section-header">
+            <strong>Next Steps</strong>
+          </div>
+          <ol>
+            <li>Establish an inherited 403(b) account in your name as beneficiary</li>
+            <li>Select distribution method that complies with IRS requirements (typically complete distribution within 10 years)</li>
+            <li>Review distribution options - lump sum or periodic payments</li>
+            <li>Separately contribute to your own 401(k) from personal funds if desired, subject to your plan's contribution limits</li>
+          </ol>
+        </div>
+        
+        <div class="response-section">
+          <div class="section-header">
+            <strong>Reminders</strong>
+          </div>
+          <ul>
+            <li>Non-spouse beneficiaries cannot combine inherited accounts with personal retirement accounts</li>
+            <li>Distributions from inherited accounts are generally taxable</li>
+            <li>Death certificate and beneficiary verification required before any action</li>
+          </ul>
+        </div>
+        
+        <div class="response-section">
+          <div class="section-header">
+            <strong>Citations</strong>
+          </div>
+          <ul class="citations">
+            <li>403(b) Plan Document: "A direct rollover of a distribution from a deceased Participant's account to an inherited IRA is permitted for non-spouse Beneficiaries"</li>
+            <li>Harvard University Retirement Plan Distribution Guide: "Beneficiary distribution options depend on relationship to deceased"</li>
+          </ul>
+        </div>
+      </div>
   }
 };
 
