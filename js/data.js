@@ -17,6 +17,14 @@ const clients = {
     accountType: 'Harvard TDA 403(b)',
     avatar: 'EC'
   },
+  'jessica-holmes': {
+    id: 'jessica-holmes',
+    clientId: 'P00020',
+    name: 'Jessica Holmes',
+    company: 'UT System',
+    accountType: 'UT System Cash Balance Plan',
+    avatar: 'JH'
+  },
   'blank': {
     id: 'blank',
     name: 'New Client',
@@ -115,12 +123,64 @@ const aiResponses = {
         </div>
       </div>
     `
+  },
+  'jessica-holmes': {
+    'death-benefits': `
+      <div class="ai-response">
+        <div class="response-header">
+          <strong>Answer</strong>
+        </div>
+        <p>Ms. Holmes, I understand you're dealing with the loss of your uncle. Based on your UT System Cash Balance Plan, there are specific procedures we must follow for death benefits. <strong>While you have power of attorney, this doesn't automatically authorize withdrawal of retirement funds after death, as POA authority typically ends at death</strong>. The account would need to go through proper beneficiary claim procedures.</p>
+        
+        <div class="response-section">
+          <div class="section-header">
+            <strong>Workflow</strong>
+          </div>
+          <ol>
+            <li>Submit certified death certificate and estate documentation to verify your legal standing</li>
+            <li>Complete beneficiary claim forms identifying you as the designated beneficiary or estate representative</li>
+            <li>Review distribution options - lump sum or periodic payments</li>
+            <li>If eligible for distribution, complete withholding election forms</li>
+            <li>Receive distribution after processing (typically 7-10 business days after complete documentation)</li>
+          </ol>
+        </div>
+        
+        <div class="response-section">
+          <div class="section-header">
+            <strong>Reminders</strong>
+          </div>
+          <ul>
+            <li>POA authority ends at death</li>
+            <li>Death certificate required before any distribution</li>
+            <li>No early withdrawal penalty exception for transferring to your 401(k)</li>
+          </ul>
+        </div>
+        
+        <div class="response-section">
+          <div class="section-header">
+            <strong>Citations</strong>
+          </div>
+          <ul class="citations">
+            <li>INFOWAVE Estate Planning Document: "Temporary restriction placed on account immediately upon death notification"</li>
+            <li>403(b) Plan Document: "When a Participant dies, the entire interest must be distributed to the Beneficiary according to specific timeframes"</li>
+            <li>Harvard University Retirement Plan Distribution Guide: "The benefit is paid at your death to your beneficiary"</li>
+          </ul>
+        </div>
+      </div>
+    `
   }
 };
 
 // Generate AI response based on message content and client
 function generateAIResponse(message, clientId) {
   const lowerMessage = message.toLowerCase();
+  
+  // Check for death benefits/inheritance questions
+  if (lowerMessage.includes('death') || lowerMessage.includes('died') || lowerMessage.includes('uncle') || 
+      lowerMessage.includes('funeral') || lowerMessage.includes('inheritance') || lowerMessage.includes('estate') ||
+      lowerMessage.includes('power of attorney') || lowerMessage.includes('beneficiary')) {
+    return aiResponses[clientId]?.['death-benefits'] || getGenericResponse();
+  }
   
   // Check for borrowing/loan questions
   if (lowerMessage.includes('borrow') || lowerMessage.includes('loan') || lowerMessage.includes('403b')) {
