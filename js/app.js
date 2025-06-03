@@ -3,7 +3,7 @@ class AssistantAI {
   constructor() {
     this.init();
     this.startIncomingCallTimer();
-    this.addExistingConsultations(); // Add this line
+    this.addExistingConsultations();
   }
   
   init() {
@@ -12,72 +12,72 @@ class AssistantAI {
     this.hideClientBanner();
   }
   
-// Add this new method (update the existing addExistingConsultations method)
-addExistingConsultations() {
-  // Add Dr. Chen's consultation to sidebar (existing consultation)
-  const chenConsultation = ChatManager.createConsultation('eleanor-chen');
-  if (chenConsultation) {
-    chenConsultation.startTime = new Date(Date.now() - 45 * 60 * 1000); // 45 minutes ago
-    chenConsultation.messages = [
-      {
-        id: 'msg-1',
-        content: "How much can I borrow from my 403b??",
-        isUser: true,
-        timestamp: new Date(Date.now() - 44 * 60 * 1000)
-      },
-      {
-        id: 'msg-2',
-        content: aiResponses['eleanor-chen']['borrowing'],
-        isUser: false,
-        timestamp: new Date(Date.now() - 43 * 60 * 1000)
+  // Add existing consultations to sidebar
+  addExistingConsultations() {
+    // Add Dr. Chen's consultation to sidebar (existing consultation)
+    const chenConsultation = ChatManager.createConsultation('eleanor-chen');
+    if (chenConsultation) {
+      chenConsultation.startTime = new Date(Date.now() - 45 * 60 * 1000); // 45 minutes ago
+      chenConsultation.messages = [
+        {
+          id: 'msg-1',
+          content: "How much can I borrow from my 403b??",
+          isUser: true,
+          timestamp: new Date(Date.now() - 44 * 60 * 1000)
+        },
+        {
+          id: 'msg-2',
+          content: aiResponses['eleanor-chen']['borrowing'],
+          isUser: false,
+          timestamp: new Date(Date.now() - 43 * 60 * 1000)
+        }
+      ];
+      
+      const chatItem = ChatManager.addToSidebar(chenConsultation);
+      const previewEl = chatItem.querySelector('.chat-preview');
+      if (previewEl) {
+        previewEl.textContent = '403(b) loan inquiry completed';
       }
-    ];
-    
-    const chatItem = ChatManager.addToSidebar(chenConsultation);
-    const previewEl = chatItem.querySelector('.chat-preview');
-    if (previewEl) {
-      previewEl.textContent = '403(b) loan inquiry completed';
     }
-  }
 
-  // Add Jessica Holmes consultation (more recent)
-  const holmesConsultation = ChatManager.createConsultation('jessica-holmes');
-  if (holmesConsultation) {
-    holmesConsultation.startTime = new Date(Date.now() - 25 * 60 * 1000); // 25 minutes ago
-    holmesConsultation.messages = [
-      {
-        id: 'msg-3',
-        content: "Client's uncle died yesterday. and left them his 403b in full and they need ALL the money RIGHT NOW for his funeral but also want to put some of it in a 401k they have. The IRS agent said something about a death exception for the 59.5 rule and they can triple their contributions under the CARES act? They have power of attorney for their uncle's estate so are saying they can legally do whatever they want with their money and they should be able to get it all today because it is theirs.",
-        isUser: true,
-        timestamp: new Date(Date.now() - 24 * 60 * 1000)
-      },
-      {
-        id: 'msg-4',
-        content: aiResponses['jessica-holmes']['death-benefits'],
-        isUser: false,
-        timestamp: new Date(Date.now() - 23 * 60 * 1000)
-      },
-       {
-        id: 'msg-5',
-        content: "And they wanted to move a portion of that 403b into a 401k?",
-        isUser: true,
-        timestamp: new Date(Date.now() - 22 * 60 * 1000)
-      },
-      {
-        id: 'msg-6',
-        content: "['jessica-holmes']['403b to 401k']",
-        isUser: false,
-        timestamp: new Date(Date.now() - 22 * 60 * 1000)
+    // Add Jessica Holmes consultation (more recent)
+    const holmesConsultation = ChatManager.createConsultation('jessica-holmes');
+    if (holmesConsultation) {
+      holmesConsultation.startTime = new Date(Date.now() - 25 * 60 * 1000); // 25 minutes ago
+      holmesConsultation.messages = [
+        {
+          id: 'msg-3',
+          content: "Client's uncle died yesterday. and left them his 403b in full and they need ALL the money RIGHT NOW for his funeral but also want to put some of it in a 401k they have. The IRS agent said something about a death exception for the 59.5 rule and they can triple their contributions under the CARES act? They have power of attorney for their uncle's estate so are saying they can legally do whatever they want with their money and they should be able to get it all today because it is theirs.",
+          isUser: true,
+          timestamp: new Date(Date.now() - 24 * 60 * 1000)
+        },
+        {
+          id: 'msg-4',
+          content: aiResponses['jessica-holmes']['death-benefits'],
+          isUser: false,
+          timestamp: new Date(Date.now() - 23 * 60 * 1000)
+        },
+        {
+          id: 'msg-5',
+          content: "And they wanted to move a portion of that 403b into a 401k?",
+          isUser: true,
+          timestamp: new Date(Date.now() - 22 * 60 * 1000)
+        },
+        {
+          id: 'msg-6',
+          content: aiResponses['jessica-holmes']['rollover'],
+          isUser: false,
+          timestamp: new Date(Date.now() - 21 * 60 * 1000)
+        }
+      ];
+      
+      const chatItem = ChatManager.addToSidebar(holmesConsultation);
+      const previewEl = chatItem.querySelector('.chat-preview');
+      if (previewEl) {
+        previewEl.textContent = 'Death benefits inquiry - urgent';
       }
-    ];
-    
-    const chatItem = ChatManager.addToSidebar(holmesConsultation);
-    const previewEl = chatItem.querySelector('.chat-preview');
-    if (previewEl) {
-      previewEl.textContent = 'Death benefits inquiry - urgent';
     }
   }
-}
   
   startIncomingCallTimer() {
     // Show incoming call after 30 seconds
@@ -259,9 +259,6 @@ addExistingConsultations() {
     
     ChatManager.addToSidebar(consultation);
     ChatManager.activateConsultation(consultation.id);
-    
-    // No auto-fill for James Jackson
-    // No auto-fill for Eleanor Chen either now
   }
   
   sendMessage() {
