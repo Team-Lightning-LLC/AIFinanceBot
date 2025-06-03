@@ -47,7 +47,7 @@ addExistingConsultations() {
     holmesConsultation.messages = [
       {
         id: 'msg-3',
-        content: "Client's uncle died yesterday. and left them his 403c in full and I need ALL the money RIGHT NOW for his funeral but also I want to put some of it in a 401k i have. The IRS agent I talked to said there's a death exception for the 59.5 rule and I can triple my contributions under the CARES act. I have power of attorney for my uncle's estate so I can legally do whatever I want with his money and I should be able to get it all today.",
+        content: "Client's uncle died yesterday. and left them his 403b in full and they need ALL the money RIGHT NOW for his funeral but also want to put some of it in a 401k they have. The IRS agent said something about a death exception for the 59.5 rule and they can triple their contributions under the CARES act? They have power of attorney for their uncle's estate so are saying they can legally do whatever they want with their money and they should be able to get it all today because it is theirs.",
         isUser: true,
         timestamp: new Date(Date.now() - 24 * 60 * 1000)
       },
@@ -56,6 +56,18 @@ addExistingConsultations() {
         content: aiResponses['jessica-holmes']['death-benefits'],
         isUser: false,
         timestamp: new Date(Date.now() - 23 * 60 * 1000)
+      },
+       {
+        id: 'msg-5',
+        content: "And they wanted to move a portion of that 403b into a 401k?",
+        isUser: true,
+        timestamp: new Date(Date.now() - 22 * 60 * 1000)
+      },
+      {
+        id: 'msg-6',
+        content: "['jessica-holmes']['403b to 401k']",
+        isUser: false,
+        timestamp: new Date(Date.now() - 22 * 60 * 1000)
       }
     ];
     
