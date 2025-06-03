@@ -46,7 +46,7 @@ const aiResponses = {
         
         <div class="response-section">
           <div class="section-header">
-            <strong>Next Steps</strong>
+            <strong>Workflow</strong>
           </div>
           <ol>
             <li>Contact your plan provider to request a loan application</li>
@@ -90,7 +90,7 @@ const aiResponses = {
         
         <div class="response-section">
           <div class="section-header">
-            <strong>Next Steps</strong>
+            <strong>Workflow</strong>
           </div>
           <ol>
             <li>Verify loan eligibility (must be actively employed)</li>
@@ -134,7 +134,7 @@ const aiResponses = {
         
         <div class="response-section">
           <div class="section-header">
-            <strong>Next Steps</strong>
+            <strong>Workflow</strong>
           </div>
           <ol>
             <li>Submit certified death certificate and estate documentation to verify your legal standing</li>
@@ -167,19 +167,17 @@ const aiResponses = {
           </ul>
         </div>
       </div>
-    `
-  },
-  'jessica-holmes': {
-    '403b to 401k': `
+    `,
+    'rollover': `
       <div class="ai-response">
         <div class="response-header">
           <strong>Answer</strong>
         </div>
-        <p>Ms. Holmes, <b>as a non-spouse beneficiary of your uncle's 403(b), IRS regulations do not permit you to roll these funds directly into your personal 401(k). </b>The inherited 403(b) must remain a separate account designated as an "Inherited 403(b)" with its own distribution rules. You would need to take distributions from the inherited account according to the beneficiary rules</p>
+        <p>Ms. Holmes, <strong>as a non-spouse beneficiary of your uncle's 403(b), IRS regulations do not permit you to roll these funds directly into your personal 401(k)</strong>. The inherited 403(b) must remain a separate account designated as an "Inherited 403(b)" with its own distribution rules. You would need to take distributions from the inherited account according to the beneficiary rules.</p>
         
         <div class="response-section">
           <div class="section-header">
-            <strong>Next Steps</strong>
+            <strong>Workflow</strong>
           </div>
           <ol>
             <li>Establish an inherited 403(b) account in your name as beneficiary</li>
@@ -210,12 +208,20 @@ const aiResponses = {
           </ul>
         </div>
       </div>
+    `
   }
 };
 
 // Generate AI response based on message content and client
 function generateAIResponse(message, clientId) {
   const lowerMessage = message.toLowerCase();
+  
+  // Check for rollover/transfer questions
+  if (lowerMessage.includes('rollover') || lowerMessage.includes('transfer') || 
+      lowerMessage.includes('move') || lowerMessage.includes('401k') || 
+      lowerMessage.includes('401(k)')) {
+    return aiResponses[clientId]?.['rollover'] || getGenericResponse();
+  }
   
   // Check for death benefits/inheritance questions
   if (lowerMessage.includes('death') || lowerMessage.includes('died') || lowerMessage.includes('uncle') || 
