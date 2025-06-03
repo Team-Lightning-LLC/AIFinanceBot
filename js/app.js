@@ -83,7 +83,7 @@ addExistingConsultations() {
     // Show incoming call after 30 seconds
     setTimeout(() => {
       this.showIncomingCall();
-    }, 30000);
+    }, 150000);
   }
   
   showIncomingCall() {
