@@ -12,34 +12,57 @@ class AssistantAI {
     this.hideClientBanner();
   }
   
-  // Add this new method
+// Add this new method (update the existing addExistingConsultations method)
 addExistingConsultations() {
   // Add Dr. Chen's consultation to sidebar (existing consultation)
   const chenConsultation = ChatManager.createConsultation('eleanor-chen');
   if (chenConsultation) {
-    // Make it look like an existing consultation
     chenConsultation.startTime = new Date(Date.now() - 45 * 60 * 1000); // 45 minutes ago
     chenConsultation.messages = [
       {
         id: 'msg-1',
-        content: "How much can I borrow from my 403b??", // Updated question
+        content: "How much can I borrow from my 403b??",
         isUser: true,
-        timestamp: new Date(Date.now() - 44 * 60 * 1000) // 44 minutes ago
+        timestamp: new Date(Date.now() - 44 * 60 * 1000)
       },
       {
         id: 'msg-2',
         content: aiResponses['eleanor-chen']['borrowing'],
         isUser: false,
-        timestamp: new Date(Date.now() - 43 * 60 * 1000) // 43 minutes ago
+        timestamp: new Date(Date.now() - 43 * 60 * 1000)
       }
     ];
     
-    // Add to sidebar with custom preview
     const chatItem = ChatManager.addToSidebar(chenConsultation);
-    // Update the preview text to show it has content
     const previewEl = chatItem.querySelector('.chat-preview');
     if (previewEl) {
       previewEl.textContent = '403(b) loan inquiry completed';
+    }
+  }
+
+  // Add Jessica Holmes consultation (more recent)
+  const holmesConsultation = ChatManager.createConsultation('jessica-holmes');
+  if (holmesConsultation) {
+    holmesConsultation.startTime = new Date(Date.now() - 25 * 60 * 1000); // 25 minutes ago
+    holmesConsultation.messages = [
+      {
+        id: 'msg-3',
+        content: "Client's uncle died yesterday. and left them his 403c in full and I need ALL the money RIGHT NOW for his funeral but also I want to put some of it in a 401k i have. The IRS agent I talked to said there's a death exception for the 59.5 rule and I can triple my contributions under the CARES act. I have power of attorney for my uncle's estate so I can legally do whatever I want with his money and I should be able to get it all today.",
+        isUser: true,
+        timestamp: new Date(Date.now() - 24 * 60 * 1000)
+      },
+      {
+        id: 'msg-4',
+        content: aiResponses['jessica-holmes']['death-benefits'],
+        isUser: false,
+        timestamp: new Date(Date.now() - 23 * 60 * 1000)
+      }
+    ];
+    
+    const chatItem = ChatManager.addToSidebar(holmesConsultation);
+    const previewEl = chatItem.querySelector('.chat-preview');
+    if (previewEl) {
+      previewEl.textContent = 'Death benefits inquiry - urgent';
     }
   }
 }
