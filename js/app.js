@@ -14,57 +14,31 @@ class AssistantAI {
   
   // Add existing consultations to sidebar
   addExistingConsultations() {
-    // Add Dr. Chen's consultation to sidebar (existing consultation)
-    const chenConsultation = ChatManager.createConsultation('eleanor-chen');
-    if (chenConsultation) {
-      chenConsultation.startTime = new Date(Date.now() - 45 * 60 * 1000); // 45 minutes ago
-      chenConsultation.messages = [
-        {
-          id: 'msg-1',
-          content: "How much can I borrow from my 403b??",
-          isUser: true,
-          timestamp: new Date(Date.now() - 44 * 60 * 1000)
-        },
-        {
-          id: 'msg-2',
-          content: aiResponses['eleanor-chen']['borrowing'],
-          isUser: false,
-          timestamp: new Date(Date.now() - 43 * 60 * 1000)
-        }
-      ];
-      
-      const chatItem = ChatManager.addToSidebar(chenConsultation);
-      const previewEl = chatItem.querySelector('.chat-preview');
-      if (previewEl) {
-        previewEl.textContent = '403(b) loan inquiry completed';
-      }
-    }
-
-    // Add Jessica Holmes consultation (more recent)
+    // Add Jessica Holmes consultation (most recent)
     const holmesConsultation = ChatManager.createConsultation('jessica-holmes');
     if (holmesConsultation) {
       holmesConsultation.startTime = new Date(Date.now() - 25 * 60 * 1000); // 25 minutes ago
       holmesConsultation.messages = [
         {
-          id: 'msg-3',
+          id: 'msg-jh-1',
           content: "Client's uncle died yesterday. and left them his 403b in full and they need ALL the money RIGHT NOW for his funeral but also want to put some of it in a 401k they have. The IRS agent said something about a death exception for the 59.5 rule and they can triple their contributions under the CARES act? They have power of attorney for their uncle's estate so are saying they can legally do whatever they want with their money and they should be able to get it all today because it is theirs.",
           isUser: true,
           timestamp: new Date(Date.now() - 24 * 60 * 1000)
         },
         {
-          id: 'msg-4',
+          id: 'msg-jh-2',
           content: aiResponses['jessica-holmes']['death-benefits'],
           isUser: false,
           timestamp: new Date(Date.now() - 23 * 60 * 1000)
         },
         {
-          id: 'msg-5',
+          id: 'msg-jh-3',
           content: "And they wanted to move a portion of that 403b into a 401k?",
           isUser: true,
           timestamp: new Date(Date.now() - 22 * 60 * 1000)
         },
         {
-          id: 'msg-6',
+          id: 'msg-jh-4',
           content: aiResponses['jessica-holmes']['rollover'],
           isUser: false,
           timestamp: new Date(Date.now() - 21 * 60 * 1000)
@@ -77,13 +51,39 @@ class AssistantAI {
         previewEl.textContent = 'Death benefits inquiry - urgent';
       }
     }
+
+    // Add Dr. Chen's consultation (older)
+    const chenConsultation = ChatManager.createConsultation('eleanor-chen');
+    if (chenConsultation) {
+      chenConsultation.startTime = new Date(Date.now() - 45 * 60 * 1000); // 45 minutes ago
+      chenConsultation.messages = [
+        {
+          id: 'msg-ec-1',
+          content: "How much can I borrow from my 403b??",
+          isUser: true,
+          timestamp: new Date(Date.now() - 44 * 60 * 1000)
+        },
+        {
+          id: 'msg-ec-2',
+          content: aiResponses['eleanor-chen']['borrowing'],
+          isUser: false,
+          timestamp: new Date(Date.now() - 43 * 60 * 1000)
+        }
+      ];
+      
+      const chatItem = ChatManager.addToSidebar(chenConsultation);
+      const previewEl = chatItem.querySelector('.chat-preview');
+      if (previewEl) {
+        previewEl.textContent = '403(b) loan inquiry completed';
+      }
+    }
   }
   
   startIncomingCallTimer() {
     // Show incoming call after 30 seconds
     setTimeout(() => {
       this.showIncomingCall();
-    }, 150000);
+    }, 30000);
   }
   
   showIncomingCall() {
@@ -109,7 +109,7 @@ class AssistantAI {
       this.declineClient();
     });
     
-    // Manual new consultation - now creates blank chat
+    // Manual new consultation
     document.getElementById('manual-new-chat-btn')?.addEventListener('click', () => {
       this.startBlankConsultation();
     });
@@ -225,87 +225,86 @@ class AssistantAI {
       </div>
     `;
     
-    setTimeout(() => {
-      welcomeContent.innerHTML = originalContent;
-    }, 3000);
-  }
-  
-  // Add this new method for blank consultations
-  startBlankConsultation() {
-    // Create a generic consultation
-    const blankConsultation = {
-      id: `consultation-${Date.now()}`,
-      clientId: 'blank',
-      client: {
-        id: 'blank',
-        name: 'New Client',
-        company: 'Company Name',
-        accountType: 'Account Type',
-        avatar: 'NC'
-      },
-      startTime: new Date(),
-      messages: [],
-      isActive: true
-    };
-    
-    ChatManager.chats.set(blankConsultation.id, blankConsultation);
-    ChatManager.addToSidebar(blankConsultation);
-    ChatManager.activateConsultation(blankConsultation.id);
-  }
-  
-  startNewConsultation(clientId, isAccepted = false) {
-    const consultation = ChatManager.createConsultation(clientId);
-    if (!consultation) return;
-    
-    ChatManager.addToSidebar(consultation);
-    ChatManager.activateConsultation(consultation.id);
-  }
-  
-  sendMessage() {
-    const messageInput = document.getElementById('message-input');
-    const message = messageInput.value.trim();
-    
-    if (!message || !ChatManager.activeChat) return;
-    
-    ChatManager.addMessage(ChatManager.activeChat.id, message, true);
-    
-    messageInput.value = '';
-    this.autoResizeTextarea(messageInput);
-    
-    ChatManager.processAIResponse(message, ChatManager.activeChat.clientId);
-  }
-  
-  autoResizeTextarea(textarea) {
-    textarea.style.height = 'auto';
-    textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
-  }
-  
-  showCallModal() {
-    document.getElementById('call-modal').classList.add('active');
-  }
-  
-  hideCallModal() {
-    document.getElementById('call-modal').classList.remove('active');
-  }
-  
-  showExportModal() {
-    const summary = ChatManager.generateExportSummary();
-    document.getElementById('export-summary').textContent = summary;
-    document.getElementById('export-modal').classList.add('active');
-  }
-  
-  hideExportModal() {
-    document.getElementById('export-modal').classList.remove('active');
-  }
-  
-  hideAllModals() {
-    document.querySelectorAll('.modal-overlay').forEach(modal => {
-      modal.classList.remove('active');
-    });
-  }
+setTimeout(() => {
+     welcomeContent.innerHTML = originalContent;
+   }, 3000);
+ }
+ 
+ // Create blank consultation
+ startBlankConsultation() {
+   const blankConsultation = {
+     id: `consultation-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+     clientId: 'blank',
+     client: {
+       id: 'blank',
+       name: 'New Client',
+       company: 'Company Name',
+       accountType: 'Account Type',
+       avatar: 'NC'
+     },
+     startTime: new Date(),
+     messages: [],
+     isActive: true
+   };
+   
+   ChatManager.chats.set(blankConsultation.id, blankConsultation);
+   ChatManager.addToSidebar(blankConsultation);
+   ChatManager.activateConsultation(blankConsultation.id);
+ }
+ 
+ startNewConsultation(clientId, isAccepted = false) {
+   const consultation = ChatManager.createConsultation(clientId);
+   if (!consultation) return;
+   
+   ChatManager.addToSidebar(consultation);
+   ChatManager.activateConsultation(consultation.id);
+ }
+ 
+ sendMessage() {
+   const messageInput = document.getElementById('message-input');
+   const message = messageInput.value.trim();
+   
+   if (!message || !ChatManager.activeChat) return;
+   
+   ChatManager.addMessage(ChatManager.activeChat.id, message, true);
+   
+   messageInput.value = '';
+   this.autoResizeTextarea(messageInput);
+   
+   ChatManager.processAIResponse(message, ChatManager.activeChat.clientId);
+ }
+ 
+ autoResizeTextarea(textarea) {
+   textarea.style.height = 'auto';
+   textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+ }
+ 
+ showCallModal() {
+   document.getElementById('call-modal').classList.add('active');
+ }
+ 
+ hideCallModal() {
+   document.getElementById('call-modal').classList.remove('active');
+ }
+ 
+ showExportModal() {
+   const summary = ChatManager.generateExportSummary();
+   document.getElementById('export-summary').textContent = summary;
+   document.getElementById('export-modal').classList.add('active');
+ }
+ 
+ hideExportModal() {
+   document.getElementById('export-modal').classList.remove('active');
+ }
+ 
+ hideAllModals() {
+   document.querySelectorAll('.modal-overlay').forEach(modal => {
+     modal.classList.remove('active');
+   });
+ }
 }
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  new AssistantAI();
+ new AssistantAI();
 });
