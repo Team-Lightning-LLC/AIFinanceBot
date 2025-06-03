@@ -8,7 +8,7 @@ const ChatManager = {
     const client = clients[clientId];
     if (!client) return null;
     
-    const chatId = `consultation-${Date.now()}`;
+    const chatId = `consultation-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const consultation = {
       id: chatId,
       clientId: clientId,
@@ -40,10 +40,14 @@ const ChatManager = {
       <div class="chat-time">${timeStr}</div>
     `;
     
-    chatItem.addEventListener('click', () => {
+    // Add click event listener
+    chatItem.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       this.activateConsultation(consultation.id);
     });
     
+    // Add to beginning of list (newest first)
     chatList.insertBefore(chatItem, chatList.firstChild);
     return chatItem;
   },
@@ -51,14 +55,23 @@ const ChatManager = {
   // Activate consultation
   activateConsultation(chatId) {
     const consultation = this.chats.get(chatId);
-    if (!consultation) return;
+    if (!consultation) {
+      console.error('Consultation not found:', chatId);
+      return;
+    }
     
     this.activeChat = consultation;
     
-    // Update UI
+    // Show chat interface
     this.showChatInterface();
+    
+    // Update header
     this.updateChatHeader(consultation.client);
+    
+    // Render messages
     this.renderMessages(consultation.messages);
+    
+    // Update sidebar selection
     this.updateSidebarSelection(chatId);
   },
   
@@ -73,6 +86,20 @@ const ChatManager = {
     document.getElementById('header-avatar').textContent = client.avatar;
     document.getElementById('header-name').textContent = client.name;
     document.getElementById('header-details').textContent = `${client.company} • ${client.accountType}`;
+  },
+  
+  // Update sidebar selection
+  updateSidebarSelection(chatId) {
+    // Remove active class from all items
+    document.querySelectorAll('.chat-item').forEach(item => {
+      item.classList.remove('active');
+    });
+    
+    // Add active class to selected item
+    const activeItem = document.querySelector(`[data-chat-id="${chatId}"]`);
+    if (activeItem) {
+      activeItem.classList.add('active');
+    }
   },
   
   // Render client info card
@@ -112,7 +139,7 @@ const ChatManager = {
     if (!consultation) return;
     
     const message = {
-      id: `msg-${Date.now()}`,
+      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       content: content,
       isUser: isUser,
       timestamp: new Date()
@@ -145,10 +172,8 @@ const ChatManager = {
     } else {
       messageEl.innerHTML = `
         <div class="message-avatar ai-avatar">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-            <path d="M2 17l10 5 10-5"></path>
-            <path d="M2 12l10 5 10-5"></path>
+          <svg width="20" height="20" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6">
+            <path d="M50,10 C70,10 85,25 85,45 C85,65 70,80 50,80 C30,80 15,65 15,45 C15,30 25,20 40,20 C50,20 55,25 55,35 C55,45 50,50 40,50 C35,50 32,47 32,42"/>
           </svg>
         </div>
         <div class="message-content">
@@ -189,7 +214,7 @@ const ChatManager = {
     this.showTypingIndicator();
     
     // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 2500));
     
     // Remove typing indicator
     this.hideTypingIndicator();
@@ -207,10 +232,8 @@ const ChatManager = {
     typingEl.id = 'typing-indicator';
     typingEl.innerHTML = `
       <div class="message-avatar ai-avatar">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-          <path d="M2 17l10 5 10-5"></path>
-          <path d="M2 12l10 5 10-5"></path>
+        <svg width="20" height="20" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6">
+          <path d="M50,10 C70,10 85,25 85,45 C85,65 70,80 50,80 C30,80 15,65 15,45 C15,30 25,20 40,20 C50,20 55,25 55,35 C55,45 50,50 40,50 C35,50 32,47 32,42"/>
         </svg>
       </div>
       <div class="typing-content">
@@ -219,75 +242,63 @@ const ChatManager = {
           <span></span>
           <span></span>
         </div>
-        <div class="typing-text">AssistantAI is analyzing...</div>
+        <div class="typing-text">Converge is analyzing...</div>
       </div>
     `;
     messagesContainer.appendChild(typingEl);
     this.scrollToBottom();
   },
   
-// Hide typing indicator
- hideTypingIndicator() {
-   const typingEl = document.getElementById('typing-indicator');
-   if (typingEl) {
-     typingEl.remove();
-   }
- },
- 
- // Update sidebar selection
- updateSidebarSelection(chatId) {
-   document.querySelectorAll('.chat-item').forEach(item => {
-     item.classList.remove('active');
-   });
-   
-   const activeItem = document.querySelector(`[data-chat-id="${chatId}"]`);
-   if (activeItem) {
-     activeItem.classList.add('active');
-   }
- },
- 
- // Scroll to bottom of messages
- scrollToBottom() {
-   const messagesContainer = document.getElementById('chat-messages');
-   messagesContainer.scrollTop = messagesContainer.scrollHeight;
- },
- 
- // Format time
- formatTime(date) {
-   return date.toLocaleTimeString([], { 
-     hour: '2-digit', 
-     minute: '2-digit',
-     hour12: true 
-   });
- },
- 
- // Generate export summary
- generateExportSummary() {
-   if (!this.activeChat) return '';
-   
-   const client = this.activeChat.client;
-   const messages = this.activeChat.messages;
-   const startTime = this.formatTime(this.activeChat.startTime);
-   
-   let summary = `CONSULTATION SUMMARY\n\n`;
-   summary += `Client: ${client.name} (${client.clientId || 'N/A'})\n`;
-   summary += `Company: ${client.company}\n`;
-   summary += `Account Type: ${client.accountType}\n`;
-   summary += `Date: ${new Date().toLocaleDateString()}\n`;
-   summary += `Time: ${startTime}\n\n`;
-   
-   summary += `CONVERSATION TRANSCRIPT:\n`;
-   messages.forEach((msg, index) => {
-     const speaker = msg.isUser ? 'ADVISOR' : 'ASSISTANT';
-     const cleanContent = msg.content.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
-     summary += `${index + 1}. ${speaker}: ${cleanContent}\n\n`;
-   });
-   
-   summary += `NEXT STEPS:\n`;
-   summary += `- Follow up on any pending questions\n`;
-   summary += `- Update client records in CRM\n`;
-   summary += `- Schedule additional consultations if needed\n`;
-   
-   return summary;
- }
+  // Hide typing indicator
+  hideTypingIndicator() {
+    const typingEl = document.getElementById('typing-indicator');
+    if (typingEl) {
+      typingEl.remove();
+    }
+  },
+  
+  // Scroll to bottom of messages
+  scrollToBottom() {
+    const messagesContainer = document.getElementById('chat-messages');
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  },
+  
+  // Format time
+  formatTime(date) {
+    return date.toLocaleTimeString([], { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: true 
+    });
+  },
+  
+  // Generate export summary
+  generateExportSummary() {
+    if (!this.activeChat) return '';
+    
+    const client = this.activeChat.client;
+    const messages = this.activeChat.messages;
+    const startTime = this.formatTime(this.activeChat.startTime);
+    
+    let summary = `CONSULTATION SUMMARY\n\n`;
+    summary += `Client: ${client.name} (${client.clientId || 'N/A'})\n`;
+    summary += `Company: ${client.company}\n`;
+    summary += `Account Type: ${client.accountType}\n`;
+    summary += `Date: ${new Date().toLocaleDateString()}\n`;
+    summary += `Time: ${startTime}\n\n`;
+    
+    summary += `CONVERSATION TRANSCRIPT:\n`;
+    messages.forEach((msg, index) => {
+      const speaker = msg.isUser ? 'ADVISOR' : 'ASSISTANT';
+      const cleanContent = msg.content.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+      summary += `${index + 1}. ${speaker}: ${cleanContent}\n\n`;
+    });
+    
+    summary += `NEXT STEPS:\n`;
+    summary += `- Follow up on any pending questions\n`;
+    summary += `- Update client records in CRM\n`;
+    summary += `- Schedule additional consultations if needed\n`;
+    
+    return summary;
+  }
 };
