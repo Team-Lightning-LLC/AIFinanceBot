@@ -46,7 +46,7 @@ const aiResponses = {
         
         <div class="response-section">
           <div class="section-header">
-            <strong>Workflow</strong>
+            <strong>Next Steps</strong>
           </div>
           <ol>
             <li>Contact your plan provider to request a loan application</li>
@@ -90,7 +90,7 @@ const aiResponses = {
         
         <div class="response-section">
           <div class="section-header">
-            <strong>Workflow</strong>
+            <strong>Next Steps</strong>
           </div>
           <ol>
             <li>Verify loan eligibility (must be actively employed)</li>
@@ -134,7 +134,7 @@ const aiResponses = {
         
         <div class="response-section">
           <div class="section-header">
-            <strong>Workflow</strong>
+            <strong>Next Steps</strong>
           </div>
           <ol>
             <li>Submit certified death certificate and estate documentation to verify your legal standing</li>
@@ -177,7 +177,7 @@ const aiResponses = {
         
         <div class="response-section">
           <div class="section-header">
-            <strong>Workflow</strong>
+            <strong>Next Steps</strong>
           </div>
           <ol>
             <li>Establish an inherited 403(b) account in your name as beneficiary</li>
@@ -216,10 +216,8 @@ const aiResponses = {
 function generateAIResponse(message, clientId) {
   const lowerMessage = message.toLowerCase();
   
-  // Check for rollover/transfer questions
-  if (lowerMessage.includes('rollover') || lowerMessage.includes('transfer') || 
-      lowerMessage.includes('move') || lowerMessage.includes('401k') || 
-      lowerMessage.includes('401(k)')) {
+  // Check for rollover/transfer questions first (more specific)
+  if (lowerMessage.includes('move') && (lowerMessage.includes('401k') || lowerMessage.includes('401(k)'))) {
     return aiResponses[clientId]?.['rollover'] || getGenericResponse();
   }
   
