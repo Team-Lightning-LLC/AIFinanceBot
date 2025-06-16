@@ -212,92 +212,82 @@ const ChatManager = {
     if (!this.activeChat) return;
     
     // Show cycling typing indicator
-    this.showCyclingTypingIndicator();
-    
-    // Wait for full cycle (4 steps × 2.5 seconds each = 10 seconds)
-    await new Promise(resolve => setTimeout(resolve, 10000));
-    
-    // Remove typing indicator
-    this.hideTypingIndicator();
+    await this.showCyclingTypingIndicator();
     
     // Generate and add AI response
     const aiResponse = generateAIResponse(userMessage, clientId);
     this.addMessage(this.activeChat.id, aiResponse, false);
   },
   
-  // Show cycling typing indicator
+  // Show cycling typing indicator with promise-based timing
   showCyclingTypingIndicator() {
-    const messagesContainer = document.getElementById('chat-messages');
-    const typingEl = document.createElement('div');
-    typingEl.className = 'typing-indicator';
-    typingEl.id = 'typing-indicator';
-    typingEl.innerHTML = `
-      <div class="message-avatar ai-avatar">
-        <svg width="20" height="20" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6">
-          <path d="M50,10 C70,10 85,25 85,45 C85,65 70,80 50,80 C30,80 15,65 15,45 C15,30 25,20 40,20 C50,20 55,25 55,35 C55,45 50,50 40,50 C35,50 32,47 32,42"/>
-        </svg>
-      </div>
-      <div class="typing-content">
-        <div class="typing-dots">
-          <span></span>
-          <span></span>
-          <span></span>
+    return new Promise((resolve) => {
+      const messagesContainer = document.getElementById('chat-messages');
+      
+      // Create typing indicator
+      const typingEl = document.createElement('div');
+      typingEl.className = 'typing-indicator';
+      typingEl.id = 'typing-indicator';
+      typingEl.innerHTML = `
+        <div class="message-avatar ai-avatar">
+          <svg width="20" height="20" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6">
+            <path d="M50,10 C70,10 85,25 85,45 C85,65 70,80 50,80 C30,80 15,65 15,45 C15,30 25,20 40,20 C50,20 55,25 55,35 C55,45 50,50 40,50 C35,50 32,47 32,42"/>
+          </svg>
         </div>
-        <div class="typing-text" id="typing-text">Converge is retrieving client details...</div>
-      </div>
-    `;
-    messagesContainer.appendChild(typingEl);
-    this.scrollToBottom();
-    
-    // Start the cycling animation
-    this.startTypingCycle();
-  },
-  
-  // Start typing cycle
-  startTypingCycle() {
-    const typingSteps = [
-      "Converge is retrieving client details...",
-      "Converge is researching scenario...",
-      "Converge is identifying relevant information...",
-      "Converge is compiling response..."
-    ];
-    
-    let currentStep = 0;
-    const typingTextEl = document.getElementById('typing-text');
-    
-    // Clear any existing interval
-    if (this.typingInterval) {
-      clearInterval(this.typingInterval);
-    }
-    
-    // Update text every 2.5 seconds
-    this.typingInterval = setInterval(() => {
-      if (typingTextEl && currentStep < typingSteps.length) {
-        typingTextEl.textContent = typingSteps[currentStep];
-        currentStep++;
-        
-        // Stop after all steps are complete
-        if (currentStep >= typingSteps.length) {
-          clearInterval(this.typingInterval);
-          this.typingInterval = null;
+        <div class="typing-content">
+          <div class="typing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="typing-text" id="typing-text">Converge is retrieving client details...</div>
+        </div>
+      `;
+      
+      messagesContainer.appendChild(typingEl);
+      this.scrollToBottom();
+      
+      // Define the typing steps
+      const typingSteps = [
+        "Converge is retrieving client details...",
+        "Converge is researching scenario...",
+        "Converge is identifying relevant information...",
+        "Converge is compiling response..."
+      ];
+      
+      let currentStep = 0;
+      const typingTextEl = document.getElementById('typing-text');
+      
+      // Start with first step already shown
+      currentStep = 1;
+      
+      // Create interval to cycle through steps
+      const interval = setInterval(() => {
+        if (currentStep < typingSteps.length && typingTextEl) {
+          typingTextEl.textContent = typingSteps[currentStep];
+          currentStep++;
+        } else {
+          // All steps complete
+          clearInterval(interval);
+          this.hideTypingIndicator();
+          resolve();
         }
-      } else {
-        // Safety cleanup if element is gone
-        clearInterval(this.typingInterval);
-        this.typingInterval = null;
-      }
-    }, 2500); // 2.5 seconds per step
+      }, 2500); // 2.5 seconds per step
+      
+      // Store interval for cleanup
+      this.typingInterval = interval;
+    });
   },
   
   // Hide typing indicator
   hideTypingIndicator() {
-    // Clear the interval first
+    // Clear any existing interval
     if (this.typingInterval) {
       clearInterval(this.typingInterval);
       this.typingInterval = null;
     }
     
-    // Remove the element
+    // Remove the typing indicator element
     const typingEl = document.getElementById('typing-indicator');
     if (typingEl) {
       typingEl.remove();
