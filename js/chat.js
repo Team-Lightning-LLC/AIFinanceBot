@@ -272,7 +272,7 @@ const ChatManager = {
           this.hideTypingIndicator();
           resolve();
         }
-      }, 2500); // 2.5 seconds per step
+      }, 10000); // 2.5 seconds per step
       
       // Store interval for cleanup
       this.typingInterval = interval;
