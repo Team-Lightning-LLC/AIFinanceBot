@@ -1426,3 +1426,40 @@ textarea:focus-visible {
    page-break-inside: avoid;
  }
 }
+/* API Status Indicators */
+.api-status {
+  padding: 8px 12px;
+  border-radius: var(--radius-lg);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.api-status.live {
+  background: var(--success-light);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.api-status.demo {
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.chat-item.api-connected {
+  border-left: 3px solid var(--success);
+}
+
+.error-response {
+  background: var(--error-light);
+  border: 1px solid var(--error);
+  color: var(--text-primary);
+}
+
+.error-response .response-header {
+  color: var(--error);
+}
