@@ -8,7 +8,7 @@ const ChatManager = {
   apiConfig: {
     baseUrl: 'https://studio-server-production.api.vertesia.io/api/v1',
     // You'll need to replace this with your actual API key
-    apiKey: 'sk-9ddac5c59b4dcaddfb83bf8316cc7215' // Get this from your Vertesia dashboard
+    apiKey: '' // Get this from your Vertesia dashboard
   },
   
   // Create new consultation
