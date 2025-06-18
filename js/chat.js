@@ -1,8 +1,15 @@
-// Chat management system
+// Chat management system with API integration
 const ChatManager = {
   activeChat: null,
   chats: new Map(),
   typingInterval: null,
+  
+  // API Configuration
+  apiConfig: {
+    baseUrl: 'https://studio-server-production.api.vertesia.io/api/v1',
+    // You'll need to replace this with your actual API key
+    apiKey: 'YOUR_API_KEY_HERE' // Get this from your Vertesia dashboard
+  },
   
   // Create new consultation
   createConsultation(clientId) {
@@ -16,7 +23,8 @@ const ChatManager = {
       client: client,
       startTime: new Date(),
       messages: [],
-      isActive: true
+      isActive: true,
+      isConnectedToAPI: clientId === 'james-jackson' // Only James Jackson uses real API
     };
     
     this.chats.set(chatId, consultation);
@@ -36,10 +44,15 @@ const ChatManager = {
       <div class="chat-avatar">${consultation.client.avatar}</div>
       <div class="chat-details">
         <div class="chat-name">${consultation.client.name}</div>
-        <div class="chat-preview">Consultation in progress...</div>
+        <div class="chat-preview">${consultation.isConnectedToAPI ? 'Live AI Assistant' : 'Demo Mode'}</div>
       </div>
       <div class="chat-time">${timeStr}</div>
     `;
+    
+    // Add API indicator for James Jackson
+    if (consultation.isConnectedToAPI) {
+      chatItem.classList.add('api-connected');
+    }
     
     // Add click event listener
     chatItem.addEventListener('click', (e) => {
@@ -86,7 +99,13 @@ const ChatManager = {
   updateChatHeader(client) {
     document.getElementById('header-avatar').textContent = client.avatar;
     document.getElementById('header-name').textContent = client.name;
-    document.getElementById('header-details').textContent = `${client.company} • ${client.accountType}`;
+    
+    const consultation = this.activeChat;
+    const statusText = consultation.isConnectedToAPI ? 
+      `${client.company} • ${client.accountType} • Live AI` : 
+      `${client.company} • ${client.accountType} • Demo`;
+    
+    document.getElementById('header-details').textContent = statusText;
   },
   
   // Update sidebar selection
@@ -105,6 +124,11 @@ const ChatManager = {
   
   // Render client info card
   renderClientCard(client) {
+    const consultation = this.activeChat;
+    const apiStatus = consultation?.isConnectedToAPI ? 
+      '<div class="api-status live">🟢 Connected to Live AI</div>' :
+      '<div class="api-status demo">🔵 Demo Mode</div>';
+    
     return `
       <div class="client-card">
         <div class="card-header">
@@ -116,6 +140,7 @@ const ChatManager = {
           </div>
           <h4>Client Information</h4>
         </div>
+        ${apiStatus}
         <div class="client-details-grid">
           <div class="detail-item">
             <label>Full Name</label>
@@ -207,16 +232,144 @@ const ChatManager = {
     this.scrollToBottom();
   },
   
-  // Process AI response with cycling typing indicator
+  // Process AI response - now with real API integration
   async processAIResponse(userMessage, clientId) {
     if (!this.activeChat) return;
     
     // Show cycling typing indicator
     await this.showCyclingTypingIndicator();
     
-    // Generate and add AI response
-    const aiResponse = generateAIResponse(userMessage, clientId);
+    let aiResponse;
+    
+    // Use real API for James Jackson, fallback to demo for others
+    if (this.activeChat.isConnectedToAPI && clientId === 'james-jackson') {
+      try {
+        aiResponse = await this.callVertesiaAPI(userMessage, this.activeChat.client);
+      } catch (error) {
+        console.error('API call failed:', error);
+        aiResponse = this.createErrorResponse(error);
+      }
+    } else {
+      // Use the existing demo responses for other clients
+      aiResponse = generateAIResponse(userMessage, clientId);
+    }
+    
     this.addMessage(this.activeChat.id, aiResponse, false);
+  },
+  
+  // Call Vertesia API
+  async callVertesiaAPI(userMessage, client) {
+    const apiUrl = `${this.apiConfig.baseUrl}/chat/completions`; // Adjust endpoint as needed
+    
+    // Prepare the conversation context
+    const conversationContext = {
+      client_info: {
+        name: client.name,
+        company: client.company,
+        account_type: client.accountType,
+        client_id: client.clientId
+      },
+      message: userMessage,
+    };
+    
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.apiConfig.apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(conversationContext)
+    };
+    
+    try {
+      const response = await fetch(apiUrl, requestOptions);
+      
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      // Format the API response to match your expected structure
+      return this.formatAPIResponse(data);
+      
+    } catch (error) {
+      console.error('API Error:', error);
+      throw error;
+    }
+  },
+  
+  // Format API response to match your UI structure
+  formatAPIResponse(apiData) {
+    // This will depend on what your API returns
+    // For now, I'll assume it returns a structured response
+    
+    if (apiData.response) {
+      return `
+        <div class="ai-response">
+          <div class="response-header">
+            <strong>Answer</strong>
+          </div>
+          <p>${apiData.response}</p>
+          
+          ${apiData.workflow ? `
+            <div class="response-section">
+              <div class="section-header">
+                <strong>Workflow</strong>
+              </div>
+              <div>${apiData.workflow}</div>
+            </div>
+          ` : ''}
+          
+          ${apiData.reminders ? `
+            <div class="response-section">
+              <div class="section-header">
+                <strong>Reminders</strong>
+              </div>
+              <div>${apiData.reminders}</div>
+            </div>
+          ` : ''}
+          
+          ${apiData.citations ? `
+            <div class="response-section">
+              <div class="section-header">
+                <strong>Citations</strong>
+              </div>
+              <div>${apiData.citations}</div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+    
+    // Fallback if API response format is different
+    return `
+      <div class="ai-response">
+        <div class="response-header">
+          <strong>Answer</strong>
+        </div>
+        <p>${JSON.stringify(apiData)}</p>
+      </div>
+    `;
+  },
+  
+  // Create error response
+  createErrorResponse(error) {
+    return `
+      <div class="ai-response error-response">
+        <div class="response-header">
+          <strong>Connection Error</strong>
+        </div>
+        <p>I'm having trouble connecting to the live AI system right now. This might be due to:</p>
+        <ul>
+          <li>Network connectivity issues</li>
+          <li>API key configuration</li>
+          <li>Service temporarily unavailable</li>
+        </ul>
+        <p><em>Error: ${error.message}</em></p>
+        <p>Please try again in a moment, or contact your system administrator if the problem persists.</p>
+      </div>
+    `;
   },
   
   // Show cycling typing indicator with promise-based timing
@@ -272,7 +425,7 @@ const ChatManager = {
           this.hideTypingIndicator();
           resolve();
         }
-      }, 10000); // 2.5 seconds per step
+      }, 2500); // 2.5 seconds per step
       
       // Store interval for cleanup
       this.typingInterval = interval;
@@ -321,6 +474,7 @@ const ChatManager = {
     summary += `Client: ${client.name} (${client.clientId || 'N/A'})\n`;
     summary += `Company: ${client.company}\n`;
     summary += `Account Type: ${client.accountType}\n`;
+    summary += `Mode: ${this.activeChat.isConnectedToAPI ? 'Live AI Assistant' : 'Demo Mode'}\n`;
     summary += `Date: ${new Date().toLocaleDateString()}\n`;
     summary += `Time: ${startTime}\n\n`;
     
