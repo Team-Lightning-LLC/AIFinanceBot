@@ -7,7 +7,7 @@ const ChatManager = {
   // API Configuration
   apiConfig: {
     baseUrl: 'https://studio-server-production.api.vertesia.io/api/v1',
-    apiKey: 'YOUR_API_KEY_HERE', // Replace with your actual API key
+    apiKey: process.env.NEXT_PUBLIC_VERTESIA_API_KEY, // Note the NEXT_PUBLIC_ prefix
     authUrl: 'https://studio-server-production.api.vertesia.io/auth/token'
   },
 
